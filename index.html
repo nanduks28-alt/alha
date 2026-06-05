@@ -4,463 +4,218 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ALHA – Luxury Catering</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;900&family=Abril+Fatface&family=Fraunces:opsz,wght@9..144,900&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Reset & Base ────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --burgundy: #6B1A2A;
-      --burgundy-dark: #4A0E1A;
-      --burgundy-light: #8B2239;
-      --cream: #FAF6EE;
-      --cream-dark: #F2EBD9;
-      --gold: #C9A84C;
-      --gold-light: #E8C96A;
-      --text-dark: #2A1208;
+      --burgundy: #6B1A2A; --burgundy-dark: #4A0E1A; --burgundy-light: #8B2239;
+      --cream: #FAF6EE; --cream-dark: #F2EBD9; --gold: #C9A84C; --gold-light: #E8C96A;
     }
     html, body { width: 100%; height: 100%; overflow-x: hidden; background: var(--cream); font-family: 'Montserrat', sans-serif; }
 
-    /* ─── STAGE 1: LOADING SCREEN ─────────────────────────────── */
+    /* ── LOADING SCREEN ── */
     #loading-screen {
       position: fixed; inset: 0; z-index: 9999;
       background: var(--cream);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
     #loading-screen.fade-out { opacity: 0; visibility: hidden; }
 
-    /* SVG wordmark container */
+    .bg-glow { position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(107,26,42,0.06) 0%,transparent 70%),radial-gradient(ellipse 40% 30% at 20% 80%,rgba(201,168,76,0.07) 0%,transparent 60%),radial-gradient(ellipse 35% 25% at 80% 20%,rgba(201,168,76,0.05) 0%,transparent 55%); }
+    .bg-dots { position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(107,26,42,0.055) 1px,transparent 0);background-size:28px 28px; }
+
+    .corner { position:absolute;width:72px;height:72px; }
+    .corner svg { width:100%;height:100%; }
+    .corner--tl{top:28px;left:28px;} .corner--tr{top:28px;right:28px;transform:scaleX(-1);}
+    .corner--bl{bottom:28px;left:28px;transform:scaleY(-1);} .corner--br{bottom:28px;right:28px;transform:scale(-1,-1);}
+
+    .rule{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(107,26,42,0.08) 20%,rgba(201,168,76,0.12) 50%,rgba(107,26,42,0.08) 80%,transparent 100%);pointer-events:none;}
+    .rule--top{top:88px;} .rule--bottom{bottom:88px;}
+    .vrule{position:absolute;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent 0%,rgba(107,26,42,0.06) 20%,rgba(107,26,42,0.06) 80%,transparent 100%);pointer-events:none;}
+    .vrule--l{left:clamp(40px,8vw,100px);} .vrule--r{right:clamp(40px,8vw,100px);}
+
+    .float-icon{position:absolute;pointer-events:none;font-size:22px;animation:floatDrift 6s ease-in-out infinite;}
+    @keyframes floatDrift{0%,100%{transform:translateY(0px) rotate(var(--r));}50%{transform:translateY(-8px) rotate(calc(var(--r) + 4deg));}}
+    .fi-1{top:14%;left:9%;--r:-15deg;opacity:.13;animation-delay:0s;}
+    .fi-2{top:18%;right:10%;--r:12deg;opacity:.12;animation-delay:.8s;}
+    .fi-3{bottom:18%;left:11%;--r:8deg;opacity:.13;animation-delay:1.4s;}
+    .fi-4{bottom:14%;right:9%;--r:-10deg;opacity:.12;animation-delay:.4s;}
+    .fi-5{top:42%;left:5%;--r:6deg;opacity:.09;animation-delay:2s;font-size:16px;}
+    .fi-6{top:45%;right:5%;--r:-8deg;opacity:.09;animation-delay:1.1s;font-size:16px;}
+    .fi-7{top:68%;left:22%;--r:14deg;opacity:.08;animation-delay:2.4s;font-size:14px;}
+    .fi-8{top:22%;left:24%;--r:-5deg;opacity:.07;animation-delay:1.8s;font-size:14px;}
+
+    .diamond-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+    .diamond-line{width:clamp(30px,6vw,80px);height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
+    .diamond-line--r{background:linear-gradient(270deg,transparent,var(--gold));}
+    .diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;opacity:.9;}
+    .diamond-sm{width:4px;height:4px;background:var(--gold-light);transform:rotate(45deg);opacity:.6;}
+
+    /* ── Wordmark container ── */
     .wordmark-wrap {
       position: relative;
-      width: min(680px, 90vw);
-      margin-bottom: 48px;
+      width: min(640px, 86vw);
+      display: flex; justify-content: center; align-items: center;
     }
-
-    /* Glass letter SVG */
     .alha-svg {
-      width: 100%;
-      filter: drop-shadow(0 8px 32px rgba(107,26,42,0.15));
-      overflow: visible;
+      width: 100%; height: auto; overflow: visible;
+      filter: drop-shadow(0 18px 32px rgba(74,14,26,0.18));
     }
 
-    /* Glass letter fills */
-    .letter-glass {
-      fill: rgba(255,255,255,0.18);
-      stroke: rgba(201,168,76,0.7);
-      stroke-width: 2.5;
-      filter: url(#glass-filter);
-    }
-    .letter-glass-inner {
-      fill: rgba(255,255,255,0.08);
-    }
+    /* ── Progress ── */
+    .progress-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(260px,55vw);margin-top:28px;}
+    .progress-bar-track{width:100%;height:1px;background:rgba(107,26,42,0.08);position:relative;overflow:hidden;border-radius:2px;}
+    .progress-bar-fill{position:absolute;top:0;height:100%;background:linear-gradient(90deg,var(--burgundy),var(--gold));}
+    .progress-bar-fill--left{left:0;animation:closeFromLeft 2.4s cubic-bezier(0.25,1,0.5,1) forwards;}
+    .progress-bar-fill--right{right:0;background:linear-gradient(270deg,var(--burgundy),var(--gold));animation:closeFromRight 2.4s cubic-bezier(0.25,1,0.5,1) forwards;}
+    @keyframes closeFromLeft{0%{width:0%}70%{width:42%}100%{width:50%}}
+    @keyframes closeFromRight{0%{width:0%}70%{width:42%}100%{width:50%}}
+    .progress-diamonds{display:flex;align-items:center;gap:8px;margin-top:4px;animation:dotsAppear 2.4s ease forwards;}
+    @keyframes dotsAppear{0%,30%{opacity:0}60%{opacity:.4}100%{opacity:1}}
+    .p-dot{width:4px;height:4px;background:var(--gold);transform:rotate(45deg);animation:dotPulse 2.4s ease forwards;}
+    .p-dot:nth-child(1){animation-delay:.3s;} .p-dot:nth-child(2){animation-delay:.7s;opacity:.6;} .p-dot:nth-child(3){animation-delay:1.1s;opacity:.35;}
+    @keyframes dotPulse{0%{transform:rotate(45deg) scale(0)}60%{transform:rotate(45deg) scale(1.3)}100%{transform:rotate(45deg) scale(1)}}
 
-    /* H glow pulse */
-    @keyframes hGlow {
-      0%, 100% { filter: drop-shadow(0 0 8px rgba(201,168,76,0.4)) drop-shadow(0 0 24px rgba(201,168,76,0.2)); }
-      50%       { filter: drop-shadow(0 0 20px rgba(201,168,76,0.9)) drop-shadow(0 0 48px rgba(201,168,76,0.5)); }
-    }
-    .h-letter { animation: hGlow 2.4s ease-in-out infinite; }
+    /* ── PORTAL ── */
+    #portal-overlay{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;visibility:hidden;}
+    #portal-overlay.active{opacity:1;visibility:visible;pointer-events:all;}
+    .portal-curtain-left,.portal-curtain-right{position:absolute;top:0;height:100%;width:50%;background:var(--cream);transition:transform 0.7s cubic-bezier(0.25,1,0.5,1);}
+    .portal-curtain-left{left:0;transform-origin:left;} .portal-curtain-right{right:0;transform-origin:right;}
+    #portal-overlay.open .portal-curtain-left{transform:translateX(-100%);}
+    #portal-overlay.open .portal-curtain-right{transform:translateX(100%);}
+    .portal-h{position:absolute;z-index:2;width:min(130px,17vw);display:flex;align-items:center;justify-content:center;transform-origin:center center;}
+    .portal-h-svg{width:100%;height:100%;display:block;}
+    .portal-h-text{fill:url(#portal-h-fill);transition:fill 0.15s ease-out;}
+    @keyframes portalHMergeZoom{0%{transform:scale(1);opacity:1;}100%{transform:scale(3.5);opacity:0;}}
+    #portal-overlay.open .portal-h-text{fill:var(--burgundy-dark);}
+    #portal-overlay.open .portal-h{animation:portalHMergeZoom 0.6s cubic-bezier(0.25,1,0.32,1) forwards;}
 
-    /* Food emoji layers inside letters */
-    .food-layer {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; overflow: hidden;
-    }
-    .food-item {
-      position: absolute;
-      font-size: clamp(10px, 1.8vw, 18px);
-      opacity: 0.85;
-      animation: floatFood 4s ease-in-out infinite;
-    }
-    @keyframes floatFood {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50%       { transform: translateY(-4px) rotate(3deg); }
-    }
-
-    /* Progress bar */
-    .progress-wrap {
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      width: min(320px, 70vw);
-    }
-    .progress-label {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--burgundy); font-style: italic; opacity: 0.75;
-    }
-    .progress-bar-track {
-      width: 100%; height: 1.5px;
-      background: rgba(107,26,42,0.15);
-      position: relative; overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%; background: linear-gradient(90deg, var(--burgundy), var(--gold));
-      width: 0%; animation: loadProgress 3.2s cubic-bezier(0.4,0,0.2,1) forwards;
-    }
-    @keyframes loadProgress {
-      0%   { width: 0%; }
-      60%  { width: 70%; }
-      80%  { width: 85%; }
-      100% { width: 100%; }
-    }
-
-    /* ─── STAGE 2: H PORTAL TRANSITION ───────────────────────── */
-    #portal-overlay {
-      position: fixed; inset: 0; z-index: 9000;
-      display: flex; align-items: center; justify-content: center;
-      pointer-events: none;
-      opacity: 0; visibility: hidden;
-    }
-    #portal-overlay.active { opacity: 1; visibility: visible; pointer-events: all; }
-
-    .portal-curtain-left,
-    .portal-curtain-right {
-      position: absolute; top: 0; height: 100%; width: 50%;
-      background: var(--cream);
-      transition: transform 1.2s cubic-bezier(0.76,0,0.24,1);
-    }
-    .portal-curtain-left  { left: 0;   transform-origin: left;  }
-    .portal-curtain-right { right: 0;  transform-origin: right; }
-    #portal-overlay.open .portal-curtain-left  { transform: translateX(-100%); }
-    #portal-overlay.open .portal-curtain-right { transform: translateX(100%); }
-
-    /* H glyph on the curtain center */
-    .portal-h {
-      position: absolute; z-index: 1;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(80px, 18vw, 200px);
-      font-weight: 300;
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(201,168,76,0.8);
-      text-shadow: 0 0 60px rgba(201,168,76,0.6), 0 0 120px rgba(201,168,76,0.3);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      animation: hGlow2 1.6s ease-in-out infinite;
-    }
-    @keyframes hGlow2 {
-      0%, 100% { text-shadow: 0 0 40px rgba(201,168,76,0.5), 0 0 80px rgba(201,168,76,0.2); }
-      50%       { text-shadow: 0 0 80px rgba(201,168,76,1),   0 0 160px rgba(201,168,76,0.5); }
-    }
-    #portal-overlay.open .portal-h { opacity: 0; transform: scale(1.4); }
-
-    /* ─── MAIN WEBSITE ────────────────────────────────────────── */
-    #main-site {
-      opacity: 0; transform: translateY(16px);
-      transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
-    }
-    #main-site.visible { opacity: 1; transform: translateY(0); }
-
-    /* NAV */
-    nav {
-      background: var(--burgundy-dark);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 clamp(24px, 5vw, 64px); height: 62px;
-      position: sticky; top: 0; z-index: 100;
-    }
-    .nav-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px; font-weight: 300; letter-spacing: 6px;
-      color: var(--cream); text-decoration: none;
-    }
-    .nav-links { display: flex; gap: clamp(16px, 3vw, 36px); list-style: none; }
-    .nav-links a {
-      font-family: 'Montserrat', sans-serif; font-size: 11px;
-      font-weight: 400; letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(250,246,238,0.8); text-decoration: none;
-      transition: color 0.2s;
-      padding-bottom: 4px; border-bottom: 1px solid transparent;
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--cream); border-bottom-color: var(--gold); }
-    .nav-cart {
-      display: flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; position: relative; cursor: pointer;
-    }
-    .cart-icon { font-size: 18px; color: var(--cream); }
-    .cart-badge {
-      position: absolute; top: -2px; right: -2px;
-      width: 16px; height: 16px; border-radius: 50%;
-      background: var(--gold); color: var(--burgundy-dark);
-      font-size: 9px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    /* HERO / INTRO wrapper */
-    main { background: var(--cream); }
-
-    /* ─── ZIG-ZAG SECTIONS ────────────────────────────────────── */
-    .zigzag-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 520px;
-      overflow: hidden;
-    }
-    @media (max-width: 768px) {
-      .zigzag-section { grid-template-columns: 1fr; }
-      .zigzag-section .text-side { order: 1; }
-      .zigzag-section .img-side  { order: 2; }
-    }
-
-    /* Section 1 – image left, text right */
-    .section-1 .img-side  { order: 1; }
-    .section-1 .text-side { order: 2; }
-    /* Section 2 – text left, image right */
-    .section-2 .text-side { order: 1; }
-    .section-2 .img-side  { order: 2; }
-
-    .img-side {
-      position: relative; overflow: hidden;
-      min-height: 480px;
-    }
-    .img-side img {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block;
-      transition: transform 6s ease;
-    }
-    .img-side:hover img { transform: scale(1.04); }
-
-    /* Placeholder imagery (CSS-generated) */
-    .img-banquet {
-      background: linear-gradient(135deg, var(--burgundy-dark) 0%, #3A0A12 40%, #7A2030 70%, var(--burgundy) 100%);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .img-dessert {
-      background: linear-gradient(135deg, var(--cream-dark) 0%, #E8DFC8 50%, #D4C4A0 100%);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .img-placeholder-inner {
-      text-align: center; padding: 40px; opacity: 0.6;
-    }
-    .img-placeholder-inner .big-emoji { font-size: clamp(48px, 8vw, 96px); display: block; margin-bottom: 12px; }
-    .img-placeholder-inner p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--cream);
-    }
-    .img-dessert .img-placeholder-inner p { color: var(--burgundy); }
-
-    /* Divider line accent */
-    .section-divider {
-      width: 48px; height: 1px;
-      background: linear-gradient(90deg, var(--gold), transparent);
-      margin: 20px 0;
-    }
-
-    .text-side {
-      display: flex; flex-direction: column; justify-content: center;
-      padding: clamp(40px, 6vw, 80px) clamp(32px, 5vw, 72px);
-      background: var(--cream);
-    }
-    .text-eyebrow {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px; font-weight: 500; letter-spacing: 4px;
-      text-transform: uppercase; color: var(--gold);
-      margin-bottom: 16px;
-    }
-    .text-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(28px, 4vw, 48px);
-      font-weight: 300; line-height: 1.2;
-      color: var(--burgundy-dark);
-      margin-bottom: 8px;
-    }
-    .text-heading em { font-style: italic; color: var(--burgundy-light); }
-    .text-body {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(15px, 1.6vw, 18px);
-      font-weight: 300; line-height: 1.8;
-      color: #4A3020;
-      max-width: 420px;
-    }
-    .text-cta {
-      display: inline-block; margin-top: 32px;
-      padding: 13px 32px;
-      background: var(--burgundy);
-      color: var(--cream);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px; font-weight: 500; letter-spacing: 2.5px;
-      text-transform: uppercase; text-decoration: none;
-      transition: background 0.25s, letter-spacing 0.25s;
-    }
-    .text-cta:hover { background: var(--burgundy-dark); letter-spacing: 3.5px; }
-
-    /* ─── SECTION SEPARATOR ───────────────────────────────────── */
-    .section-separator {
-      width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(107,26,42,0.2), transparent);
-    }
-
-    /* ─── FOOTER ──────────────────────────────────────────────── */
-    footer {
-      background: var(--burgundy-dark);
-      padding: clamp(20px, 3vw, 32px) clamp(24px, 5vw, 64px);
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; flex-wrap: wrap;
-    }
-    .footer-left {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px; font-weight: 300; letter-spacing: 1px;
-      color: rgba(250,246,238,0.7);
-    }
-    .footer-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px; font-weight: 300; letter-spacing: 8px;
-      color: var(--cream); text-align: center;
-    }
-    .footer-right {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(250,246,238,0.5); text-align: right;
-    }
-    .footer-star { color: var(--gold); }
-
-    /* ─── Scroll reveal ───────────────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(28px);
-      transition: opacity 0.9s ease, transform 0.9s ease;
-    }
-    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    /* ── MAIN SITE ── */
+    #main-site{opacity:0;transition:opacity 0.4s ease;}
+    #main-site.visible{opacity:1;}
+    nav{background:var(--burgundy-dark);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,5vw,64px);height:62px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(250,246,238,0.05);}
+    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:6px;color:var(--cream);text-decoration:none;}
+    .nav-links{display:flex;gap:clamp(16px,3vw,36px);list-style:none;}
+    .nav-links a{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:rgba(250,246,238,0.8);text-decoration:none;transition:color 0.2s;padding-bottom:4px;border-bottom:1px solid transparent;}
+    .nav-links a:hover,.nav-links a.active{color:var(--cream);border-bottom-color:var(--gold);}
+    .nav-cart{display:flex;align-items:center;justify-content:center;width:36px;height:36px;position:relative;cursor:pointer;}
+    .cart-icon{font-size:18px;color:var(--cream);}
+    .cart-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:var(--gold);color:var(--burgundy-dark);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+    main{background:var(--cream);}
+    .zigzag-section{display:grid;grid-template-columns:1fr 1fr;min-height:600px;overflow:hidden;}
+    @media(max-width:768px){.zigzag-section{grid-template-columns:1fr;}.zigzag-section .text-side{order:1;}.zigzag-section .img-side{order:2;}}
+    .section-1 .img-side{order:1;}.section-1 .text-side{order:2;}
+    .section-2 .text-side{order:1;}.section-2 .img-side{order:2;}
+    .img-side{position:relative;overflow:hidden;min-height:480px;}
+    .img-banquet{background:linear-gradient(135deg,var(--burgundy-dark) 0%,#3A0A12 50%,var(--burgundy) 100%);display:flex;align-items:center;justify-content:center;height:100%;position:relative;}
+    .img-banquet::before{content:'';position:absolute;inset:24px;border:1px solid rgba(201,168,76,0.12);pointer-events:none;z-index:1;}
+    .img-banquet::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(250,246,238,0.03) 1px,transparent 0);background-size:24px 24px;pointer-events:none;opacity:.75;}
+    .bg-watermark{position:absolute;bottom:40px;left:40px;font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;color:rgba(250,246,238,0.02);letter-spacing:12px;pointer-events:none;line-height:1;}
+    .img-dessert{background:linear-gradient(135deg,var(--cream-dark) 0%,#E8DFC8 50%,#D4C4A0 100%);display:flex;align-items:center;justify-content:center;height:100%;}
+    .img-placeholder-inner{text-align:center;padding:40px;z-index:2;}
+    .img-placeholder-inner .big-emoji{font-size:clamp(48px,8vw,96px);display:block;margin-bottom:12px;filter:drop-shadow(0 10px 15px rgba(0,0,0,0.1));}
+    .img-placeholder-inner p{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--cream);}
+    .img-dessert .img-placeholder-inner p{color:var(--burgundy);}
+    .text-side{display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,6vw,80px) clamp(32px,5vw,72px);background:var(--cream);position:relative;}
+    .section-1 .text-side::before{content:'';position:absolute;top:40px;bottom:40px;right:40px;width:1px;background:rgba(74,14,26,0.04);pointer-events:none;}
+    .text-eyebrow{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+    .text-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;line-height:1.2;color:var(--burgundy-dark);margin-bottom:8px;}
+    .text-heading em{font-style:italic;color:var(--burgundy-light);}
+    .section-divider{width:48px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:20px 0;}
+    .text-body{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,1.6vw,18px);font-weight:300;line-height:1.8;color:#4A3020;max-width:420px;}
+    .text-cta{display:inline-block;margin-top:32px;padding:13px 32px;background:var(--burgundy);color:var(--cream);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:background 0.25s,letter-spacing 0.25s;align-self:flex-start;box-shadow:0 4px 15px rgba(74,14,26,0.15);}
+    .text-cta:hover{background:var(--burgundy-dark);letter-spacing:3.5px;}
+    .section-separator{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(107,26,42,0.1),transparent);}
+    footer{background:var(--burgundy-dark);padding:clamp(20px,3vw,32px) clamp(24px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(250,246,238,0.05);}
+    .footer-left{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;letter-spacing:1px;color:rgba(250,246,238,0.7);}
+    .footer-brand{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;letter-spacing:8px;color:var(--cream);text-align:center;}
+    .footer-right{font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(250,246,238,0.5);text-align:right;}
+    .footer-star{color:var(--gold);}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .reveal.in-view{opacity:1;transform:translateY(0);}
   </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════
-     STAGE 1 – LOADING SCREEN
-════════════════════════════════════════════════════════ -->
 <div id="loading-screen" role="status" aria-label="Loading ALHA">
+  <div class="bg-glow"></div>
+  <div class="bg-dots"></div>
+  <div class="rule rule--top"></div>
+  <div class="rule rule--bottom"></div>
+  <div class="vrule vrule--l"></div>
+  <div class="vrule vrule--r"></div>
 
+  <div class="corner corner--tl"><svg viewBox="0 0 72 72" fill="none"><path d="M4 68 L4 4 L68 4" stroke="rgba(201,168,76,0.25)" stroke-width="0.8"/><path d="M12 60 L12 12 L60 12" stroke="rgba(107,26,42,0.1)" stroke-width="0.5"/><rect x="2.5" y="2.5" width="3" height="3" transform="rotate(45 4 4)" fill="rgba(201,168,76,0.4)"/></svg></div>
+  <div class="corner corner--tr"><svg viewBox="0 0 72 72" fill="none"><path d="M4 68 L4 4 L68 4" stroke="rgba(201,168,76,0.25)" stroke-width="0.8"/><path d="M12 60 L12 12 L60 12" stroke="rgba(107,26,42,0.1)" stroke-width="0.5"/><rect x="2.5" y="2.5" width="3" height="3" transform="rotate(45 4 4)" fill="rgba(201,168,76,0.4)"/></svg></div>
+  <div class="corner corner--bl"><svg viewBox="0 0 72 72" fill="none"><path d="M4 68 L4 4 L68 4" stroke="rgba(201,168,76,0.25)" stroke-width="0.8"/><path d="M12 60 L12 12 L60 12" stroke="rgba(107,26,42,0.1)" stroke-width="0.5"/><rect x="2.5" y="2.5" width="3" height="3" transform="rotate(45 4 4)" fill="rgba(201,168,76,0.4)"/></svg></div>
+  <div class="corner corner--br"><svg viewBox="0 0 72 72" fill="none"><path d="M4 68 L4 4 L68 4" stroke="rgba(201,168,76,0.25)" stroke-width="0.8"/><path d="M12 60 L12 12 L60 12" stroke="rgba(107,26,42,0.1)" stroke-width="0.5"/><rect x="2.5" y="2.5" width="3" height="3" transform="rotate(45 4 4)" fill="rgba(201,168,76,0.4)"/></svg></div>
+
+  <span class="float-icon fi-1">🍷</span>
+  <span class="float-icon fi-2">🌹</span>
+  <span class="float-icon fi-3">🍋</span>
+  <span class="float-icon fi-4">🍫</span>
+  <span class="float-icon fi-5">✦</span>
+  <span class="float-icon fi-6">✦</span>
+  <span class="float-icon fi-7">🍃</span>
+  <span class="float-icon fi-8">🫐</span>
+
+  <div class="diamond-row">
+    <div class="diamond-line"></div><div class="diamond-sm"></div><div class="diamond"></div><div class="diamond-sm"></div><div class="diamond-line diamond-line--r"></div>
+  </div>
+
+  <!--
+    WORDMARK STRATEGY: canvas measures each letter's exact pixel width,
+    then SVG clipPaths are positioned to those exact offsets — zero gap.
+    Font: Abril Fatface (bubbly, heavy, great for food brands).
+    Fallback tint fills show until images load.
+  -->
   <div class="wordmark-wrap">
-    <!-- Layered SVG wordmark: glass letter shapes -->
-    <svg class="alha-svg" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <!-- Glass/frosted filter -->
-        <filter id="glass-filter" x="-5%" y="-5%" width="110%" height="110%">
-          <feGaussianBlur stdDeviation="1.2" result="blur"/>
-          <feColorMatrix type="saturate" values="1.3" in="blur" result="saturated"/>
-          <feComposite in="SourceGraphic" in2="saturated" operator="over"/>
-        </filter>
-        <!-- Gold gradient stroke -->
-        <linearGradient id="goldStroke" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#E8C96A"/>
-          <stop offset="50%" stop-color="#C9A84C"/>
-          <stop offset="100%" stop-color="#A0782A"/>
-        </linearGradient>
-        <!-- Inner glow for H -->
-        <radialGradient id="hGlowGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stop-color="#FFD97A" stop-opacity="0.5"/>
-          <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
-        </radialGradient>
-        <!-- Clip paths for each letter (food stays inside letters) -->
-        <clipPath id="clip-A1">
-          <polygon points="30,170 100,30 170,170"/>
-        </clipPath>
-        <clipPath id="clip-L">
-          <rect x="195" y="30" width="65" height="140"/>
-        </clipPath>
-        <clipPath id="clip-H">
-          <path d="M285,30 h55 v50 h60 v-50 h55 v140 h-55 v-55 h-60 v55 h-55 z"/>
-        </clipPath>
-        <clipPath id="clip-A2">
-          <polygon points="490,170 560,30 630,170"/>
-        </clipPath>
-      </defs>
-
-      <!-- === Letter A1 === -->
-      <g class="letter-glass" style="stroke:url(#goldStroke)">
-        <!-- Outer A shape -->
-        <polygon points="30,170 100,30 170,170 155,170 100,58 45,170" fill="rgba(255,255,255,0.12)" stroke="url(#goldStroke)" stroke-width="2"/>
-        <!-- Cross bar -->
-        <rect x="62" y="118" width="76" height="12" fill="rgba(255,255,255,0.15)" stroke="url(#goldStroke)" stroke-width="1.5"/>
-      </g>
-
-      <!-- === Letter L === -->
-      <g class="letter-glass" style="stroke:url(#goldStroke)">
-        <rect x="197" y="30" width="14" height="140" fill="rgba(255,255,255,0.12)"/>
-        <rect x="197" y="156" width="64" height="14" fill="rgba(255,255,255,0.12)"/>
-      </g>
-
-      <!-- === Letter H (with glow) === -->
-      <g class="h-letter">
-        <!-- Glow halo -->
-        <ellipse cx="368" cy="100" rx="80" ry="80" fill="url(#hGlowGrad)" opacity="0.6"/>
-        <!-- H body -->
-        <g class="letter-glass" style="stroke:url(#goldStroke)">
-          <rect x="287" y="30" width="15" height="140" fill="rgba(255,255,255,0.12)"/>
-          <rect x="352" y="30" width="15" height="140" fill="rgba(255,255,255,0.12)"/>
-          <!-- Crossbar -->
-          <rect x="287" y="92" width="80" height="16" fill="rgba(255,255,255,0.18)"/>
-        </g>
-      </g>
-
-      <!-- === Letter A2 === -->
-      <g class="letter-glass" style="stroke:url(#goldStroke)">
-        <polygon points="490,170 560,30 630,170 615,170 560,58 505,170" fill="rgba(255,255,255,0.12)" stroke="url(#goldStroke)" stroke-width="2"/>
-        <rect x="522" y="118" width="76" height="12" fill="rgba(255,255,255,0.15)" stroke="url(#goldStroke)" stroke-width="1.5"/>
-      </g>
-
-      <!-- FOOD inside A1: caramelized bananas + burgundy sauce -->
-      <g clip-path="url(#clip-A1)" opacity="0.9">
-        <text x="55"  y="140" font-size="20" text-anchor="middle">🍌</text>
-        <text x="100" y="120" font-size="14" text-anchor="middle">🍯</text>
-        <text x="78"  y="155" font-size="11" text-anchor="middle">🫙</text>
-        <!-- Sauce drizzle simulation -->
-        <ellipse cx="100" cy="150" rx="28" ry="4" fill="rgba(90,10,20,0.25)"/>
-      </g>
-
-      <!-- FOOD inside L: Venison Wellington -->
-      <g clip-path="url(#clip-L)" opacity="0.9">
-        <text x="229" y="110" font-size="22" text-anchor="middle">🥩</text>
-        <text x="229" y="148" font-size="14" text-anchor="middle">🌿</text>
-      </g>
-
-      <!-- FOOD inside H: fruit textures on crossbar + chocolate lava in verticals -->
-      <g clip-path="url(#clip-H)" opacity="0.9">
-        <!-- Left vertical – chocolate swirl -->
-        <text x="295" y="75"  font-size="14" text-anchor="middle">🍫</text>
-        <text x="295" y="155" font-size="13" text-anchor="middle">🌀</text>
-        <!-- Crossbar fruits -->
-        <text x="322" y="106" font-size="12" text-anchor="middle">🫐</text>
-        <text x="342" y="106" font-size="12" text-anchor="middle">🍓</text>
-        <text x="362" y="106" font-size="12" text-anchor="middle">🍊</text>
-        <!-- Right vertical – lava -->
-        <text x="360" y="75"  font-size="14" text-anchor="middle">🍮</text>
-        <text x="362" y="155" font-size="13" text-anchor="middle">🔥</text>
-      </g>
-
-      <!-- FOOD inside A2: chocolate lava / swirl -->
-      <g clip-path="url(#clip-A2)" opacity="0.9">
-        <text x="560" y="120" font-size="20" text-anchor="middle">🍫</text>
-        <text x="544" y="150" font-size="12" text-anchor="middle">🌊</text>
-        <text x="575" y="150" font-size="12" text-anchor="middle">🫗</text>
-      </g>
+    <canvas id="measure-canvas" style="display:none;"></canvas>
+    <svg class="alha-svg" id="alha-svg" viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg" aria-label="ALHA">
+      <defs id="alha-defs"></defs>
+      <g id="alha-fills"></g>
+      <g id="alha-images"></g>
     </svg>
   </div>
 
-  <!-- Progress bar -->
-  <div class="progress-wrap">
-    <span class="progress-label">Simmering…</span>
-    <div class="progress-bar-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-      <div class="progress-bar-fill" id="progress-fill"></div>
-    </div>
+  <div class="diamond-row" style="margin-top:20px;margin-bottom:0;">
+    <div class="diamond-line"></div><div class="diamond-sm"></div><div class="diamond"></div><div class="diamond-sm"></div><div class="diamond-line diamond-line--r"></div>
   </div>
 
-</div><!-- /#loading-screen -->
-
-
-<!-- ═══════════════════════════════════════════════════════
-     STAGE 2 – H PORTAL CURTAIN
-════════════════════════════════════════════════════════ -->
-<div id="portal-overlay" aria-hidden="true">
-  <div class="portal-curtain-left"></div>
-  <div class="portal-curtain-right"></div>
-  <div class="portal-h">H</div>
+  <div class="progress-wrap">
+    <div class="progress-bar-track" role="progressbar">
+      <div class="progress-bar-fill progress-bar-fill--left"></div>
+      <div class="progress-bar-fill progress-bar-fill--right"></div>
+    </div>
+    <div class="progress-diamonds">
+      <div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div>
+    </div>
+  </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════
-     MAIN WEBSITE
-════════════════════════════════════════════════════════ -->
-<div id="main-site">
+<div id="portal-overlay" aria-hidden="true">
+  <div class="portal-curtain-left"></div>
+  <div class="portal-curtain-right"></div>
+  <div class="portal-h" aria-hidden="true">
+    <svg class="portal-h-svg" id="portal-h-svg" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="portal-h-fill" width="1" height="1" viewBox="0 0 200 160">
+          <image href="jamun.png" x="0" y="0" width="200" height="160" preserveAspectRatio="xMidYMid slice"/>
+        </pattern>
+      </defs>
+      <text class="portal-h-text" id="portal-h-letter" x="0" y="138"
+        font-family="'Abril Fatface', serif"
+        font-size="148"
+        letter-spacing="-2">H</text>
+    </svg>
+  </div>
+</div>
 
-  <!-- NAV -->
+
+<div id="main-site">
   <nav role="navigation" aria-label="Main navigation">
     <a href="#" class="nav-brand">ALHA</a>
     <ul class="nav-links">
@@ -476,59 +231,42 @@
   </nav>
 
   <main>
-
-    <!-- ── ZIG-ZAG SECTION 1 ── -->
-    <section class="zigzag-section section-1" aria-label="The Art of Connection">
-
-      <!-- Left: Banquet photograph -->
-      <div class="img-side reveal">
-        <!-- In production, replace with: <img src="banquet.jpg" alt="Elegantly set long banquet table with burgundy accents and glowing candles"> -->
-        <div class="img-banquet" style="min-height:480px; width:100%; display:flex; align-items:center; justify-content:center;" role="img" aria-label="Elegantly set banquet table with burgundy accents and candlelight">
+    <section class="zigzag-section section-1">
+      <div class="img-side">
+        <div class="img-banquet" role="img" aria-label="Banquet table">
+          <div class="bg-watermark">ALHA</div>
           <div class="img-placeholder-inner">
             <span class="big-emoji">🕯️</span>
-            <p style="color:rgba(250,246,238,0.7)">Banquet Table</p>
+            <p style="color:rgba(250,246,238,0.85);font-weight:500;letter-spacing:3px;">Banquet Table</p>
           </div>
-          <!-- Decorative overlay gradient -->
-          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(74,14,26,0.45) 0%,transparent 60%);pointer-events:none;"></div>
-          <!-- Floating food decor -->
-          <div style="position:absolute;top:18%;left:12%;font-size:28px;opacity:0.35;transform:rotate(-12deg);">🍷</div>
-          <div style="position:absolute;bottom:20%;right:14%;font-size:24px;opacity:0.3;transform:rotate(8deg);">🌹</div>
-          <div style="position:absolute;top:55%;left:30%;font-size:20px;opacity:0.25;transform:rotate(-4deg);">✨</div>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(74,14,26,0.3) 0%,transparent 70%);pointer-events:none;"></div>
+          <div style="position:absolute;top:15%;left:15%;font-size:24px;opacity:0.25;transform:rotate(-12deg);">🍷</div>
+          <div style="position:absolute;bottom:15%;right:15%;font-size:22px;opacity:0.2;transform:rotate(8deg);">🌹</div>
+          <div style="position:absolute;top:50%;left:25%;font-size:18px;color:var(--gold);opacity:0.4;">✦</div>
+          <div style="position:absolute;bottom:45%;right:25%;font-size:14px;color:var(--gold);opacity:0.3;">✦</div>
         </div>
       </div>
-
-      <!-- Right: Text -->
-      <div class="text-side reveal" style="transition-delay:0.15s">
+      <div class="text-side reveal">
         <p class="text-eyebrow">01 — Our Story</p>
         <h2 class="text-heading">The Art of<br><em>Connection.</em></h2>
         <div class="section-divider"></div>
-        <p class="text-body">
-          ALHA transforms your gatherings into unforgettable culinary experiences, specialising in elegant bulk servings for events. Our tailored menus elevate corporate galas, micro-weddings, and intimate soirées.
-        </p>
+        <p class="text-body">ALHA transforms your gatherings into unforgettable culinary experiences, specialising in elegant bulk servings for events.</p>
         <a href="#" class="text-cta">Explore Menus</a>
       </div>
     </section>
 
     <div class="section-separator"></div>
 
-    <!-- ── ZIG-ZAG SECTION 2 ── -->
-    <section class="zigzag-section section-2" aria-label="Your Personal Indulgence">
-
-      <!-- Left: Text -->
+    <section class="zigzag-section section-2">
       <div class="text-side reveal">
         <p class="text-eyebrow">02 — Individual Craft</p>
         <h2 class="text-heading">Your Personal<br><em>Indulgence.</em></h2>
         <div class="section-divider"></div>
-        <p class="text-body">
-          Prefer a curated experience just for you? We are also open to exquisite individual servings. Our chef's creations are available for private dining and small, bespoke orders.
-        </p>
+        <p class="text-body">Prefer a curated experience just for you? Our chef's creations are available for private dining and small, bespoke orders.</p>
         <a href="#" class="text-cta">Request a Tasting</a>
       </div>
-
-      <!-- Right: Dessert photograph -->
-      <div class="img-side reveal" style="transition-delay:0.15s">
-        <!-- In production, replace with: <img src="dessert.jpg" alt="Single perfectly plated Banana Tartlet on a cream plate with a spoon"> -->
-        <div class="img-dessert" style="min-height:480px; width:100%; display:flex; align-items:center; justify-content:center;" role="img" aria-label="Single perfectly plated dessert on a cream plate">
+      <div class="img-side">
+        <div class="img-dessert" role="img" aria-label="Signature dessert">
           <div class="img-placeholder-inner">
             <span class="big-emoji" style="font-size:clamp(56px,9vw,112px);">🍮</span>
             <p style="color:var(--burgundy)">Signature Tartlet</p>
@@ -539,74 +277,134 @@
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- FOOTER -->
   <footer role="contentinfo">
     <p class="footer-left">Company Name · ALHA Luxury Catering</p>
     <p class="footer-brand">ALHA</p>
     <p class="footer-right">Branded by Luxury Event Catering <span class="footer-star">✦</span></p>
   </footer>
+</div>
 
-</div><!-- /#main-site -->
 
-
-<!-- ═══════════════════════════════════════════════════════
-     JAVASCRIPT – Orchestration
-════════════════════════════════════════════════════════ -->
 <script>
-  const loadingScreen = document.getElementById('loading-screen');
-  const portalOverlay = document.getElementById('portal-overlay');
-  const mainSite      = document.getElementById('main-site');
+// ── Wait for Abril Fatface to load, then measure & build SVG ──
+document.fonts.load("148px 'Abril Fatface'").then(buildWordmark).catch(buildWordmark);
 
-  // ── Phase 1: Let loading bar complete (≈3.4s), then trigger portal
+function buildWordmark() {
+  const FONT     = "'Abril Fatface', serif";
+  const SIZE     = 148;
+  const BASELINE = 138;
+  const KERN     = -4;   // extra tightening beyond natural advance
+  const VIEW_H   = 160;
+  const PAD      = 0;    // left pad
+
+  const letters = [
+    { ch: 'A', img: 'mango.png',   fill: '#8B2239' },
+    { ch: 'L', img: 'cupcake.png', fill: '#6B1A2A' },
+    { ch: 'H', img: 'jamun.png',   fill: '#4A0E1A' },
+    { ch: 'A', img: 'cookie.png',  fill: '#8B2239' },
+  ];
+
+  // Measure each glyph on canvas
+  const canvas  = document.getElementById('measure-canvas');
+  const ctx     = canvas.getContext('2d');
+  ctx.font      = `${SIZE}px ${FONT}`;
+
+  const widths = letters.map(l => ctx.measureText(l.ch).width);
+  const totalW = widths.reduce((s, w) => s + w, 0) + KERN * (letters.length - 1) + PAD * 2;
+
+  // Update SVG viewBox to exact measured width
+  const svg = document.getElementById('alha-svg');
+  svg.setAttribute('viewBox', `0 0 ${Math.ceil(totalW)} ${VIEW_H}`);
+
+  const defs   = document.getElementById('alha-defs');
+  const fills  = document.getElementById('alha-fills');
+  const images = document.getElementById('alha-images');
+
+  let cursor = PAD;
+
+  letters.forEach((l, i) => {
+    const w  = widths[i];
+    const id = `cp-${i}`;
+
+    // clipPath
+    const cp   = document.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
+    cp.setAttribute('id', id);
+    const txt  = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', cursor);
+    txt.setAttribute('y', BASELINE);
+    txt.setAttribute('font-family', FONT);
+    txt.setAttribute('font-size', SIZE);
+    txt.textContent = l.ch;
+    cp.appendChild(txt);
+    defs.appendChild(cp);
+
+    // fallback fill rect
+    const gf   = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    gf.setAttribute('clip-path', `url(#${id})`);
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', cursor); rect.setAttribute('y', 0);
+    rect.setAttribute('width', w + 2); rect.setAttribute('height', VIEW_H);
+    rect.setAttribute('fill', l.fill);
+    gf.appendChild(rect);
+    fills.appendChild(gf);
+
+    // image fill
+    const gi  = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    gi.setAttribute('clip-path', `url(#${id})`);
+    const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+    img.setAttribute('href', l.img);
+    img.setAttribute('x', cursor); img.setAttribute('y', 0);
+    img.setAttribute('width', w + 2); img.setAttribute('height', VIEW_H);
+    img.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+    gi.appendChild(img);
+    images.appendChild(gi);
+
+    cursor += w + KERN;
+  });
+
+  // ── Update portal H to match font & position ──
+  const pH = document.getElementById('portal-h-letter');
+  if (pH) {
+    pH.setAttribute('font-family', FONT);
+    pH.setAttribute('font-size', SIZE);
+    pH.setAttribute('y', BASELINE);
+    // measure H width
+    const hW = widths[2];
+    const pSvg = document.getElementById('portal-h-svg');
+    pSvg.setAttribute('viewBox', `0 0 ${Math.ceil(hW)} ${VIEW_H}`);
+    pH.setAttribute('x', 0);
+    const pat = pSvg.querySelector('pattern');
+    if (pat) {
+      pat.setAttribute('viewBox', `0 0 ${Math.ceil(hW)} ${VIEW_H}`);
+      const pImg = pat.querySelector('image');
+      if (pImg) { pImg.setAttribute('width', Math.ceil(hW)); pImg.setAttribute('height', VIEW_H); }
+    }
+  }
+}
+
+// ── Orchestration ──
+const loadingScreen = document.getElementById('loading-screen');
+const portalOverlay = document.getElementById('portal-overlay');
+const mainSite      = document.getElementById('main-site');
+
+setTimeout(() => {
+  loadingScreen.classList.add('fade-out');
   setTimeout(() => {
-    // 1a. Fade out loading screen
-    loadingScreen.classList.add('fade-out');
-
-    // 1b. Show portal overlay with H glow
+    portalOverlay.classList.add('active');
     setTimeout(() => {
-      portalOverlay.classList.add('active');
+      portalOverlay.classList.add('open');
+      mainSite.classList.add('visible');
+      setTimeout(() => { portalOverlay.style.display = 'none'; }, 650);
+    }, 80);
+  }, 30);
+}, 2400);
 
-      // 1c. Open the curtain (H expands/opens)
-      setTimeout(() => {
-        portalOverlay.classList.add('open');
-
-        // 1d. Show main site
-        mainSite.classList.add('visible');
-
-        // 1e. Remove portal from flow once animation done
-        setTimeout(() => {
-          portalOverlay.style.display = 'none';
-        }, 1400);
-
-      }, 600); // brief pause to see H glow, then open
-
-    }, 300); // after loading fade starts
-
-  }, 3600); // loading duration
-
-  // ── Scroll reveal
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-  // Immediately reveal above-fold elements that start visible
-  setTimeout(() => {
-    document.querySelectorAll('.reveal').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) el.classList.add('in-view');
-    });
-  }, 4800);
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 </script>
-
 </body>
 </html>
