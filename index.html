@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALHA — Luxury Dessert Catering</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&family=Abril+Fatface&display=swap" rel="stylesheet" />
   <!-- Three.js r128 from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -54,66 +53,129 @@
  
     /* ═══════════════════════════ LOADER ═══ */
     #loading-screen {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--bg-dark);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      overflow: hidden;
-      transition: opacity .8s cubic-bezier(.4,0,.2,1), visibility .8s;
-    }
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity .8s cubic-bezier(.4,0,.2,1), visibility .8s;
+}
+
+#loading-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 50%, transparent 40%, rgba(26,5,5,.55) 100%),
+    radial-gradient(ellipse 100% 30% at 50% 0%, rgba(107,17,38,.8) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 30% at 50% 100%, rgba(26,5,5,.7) 0%, transparent 70%);
+}
     #loading-screen.fade-out { opacity:0; visibility:hidden; }
-    #loading-screen::after {
-      content:''; position:absolute; left:0; right:0; height:1px;
-      background:linear-gradient(90deg,transparent,rgba(201,151,58,.6) 40%,rgba(232,192,106,.9) 50%,rgba(201,151,58,.6) 60%,transparent);
-      animation: scanLine 2.4s cubic-bezier(.4,0,.6,1) infinite; pointer-events:none;
-    }
-    @keyframes scanLine { 0%{top:-2px;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:100%;opacity:0} }
- 
-    /* 3D wireframe sphere canvas in loader */
-    #loader-3d {
-      width: 120px; height: 120px; margin-bottom: 24px;
-    }
- 
-    .loader-corners {
-      position:absolute; inset:24px;
-      border:1px solid rgba(201,151,58,.1); pointer-events:none;
-      animation: cornerFade 1s ease forwards;
-    }
-    @keyframes cornerFade { from{opacity:0;transform:scale(1.04)} to{opacity:1;transform:scale(1)} }
-    .loader-corners::before,.loader-corners::after {
-      content:''; position:absolute; width:20px; height:20px;
-      border-color:var(--gold); border-style:solid;
-    }
-    .loader-corners::before { top:-1px;left:-1px;border-width:1px 0 0 1px; }
-    .loader-corners::after  { bottom:-1px;right:-1px;border-width:0 1px 1px 0; }
- 
+
+    /* 3D wireframe sphere canvas in loader — hidden, kept for JS compat */
+    #loader-3d { display: none; }
+    .loader-corners { display:none; }
+
     .loader-inner {
       display:flex; flex-direction:column; align-items:center;
+      position: relative; z-index: 1;
       animation: loaderReveal .6s .2s ease both;
     }
     @keyframes loaderReveal { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
- 
-    .loader-tag {
-      font-size:9px; font-weight:400; letter-spacing:5px; text-transform:uppercase;
-      color:rgba(201,151,58,.6); margin-bottom:20px;
-    }
-    .loader-ornament { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
-    .orn-line { width:clamp(40px,8vw,100px); height:1px; background:linear-gradient(90deg,transparent,rgba(201,151,58,.4)); }
-    .orn-line-r { background:linear-gradient(270deg,transparent,rgba(201,151,58,.4)); }
-    .orn-diamond { width:5px; height:5px; background:var(--gold); transform:rotate(45deg); opacity:.8; }
+
+    /* Tag, ornaments, and diamond — hidden */
+    .loader-tag      { display:none; }
+    .loader-ornament { display:none; }
+
     .wordmark-wrap { width:min(560px,82vw); }
     .alha-svg { width:100%; height:auto; overflow:visible; }
     .loader-tagline {
-      font-family:'Cormorant Garamond',serif; font-size:clamp(13px,1.8vw,17px);
-      font-style:italic; font-weight:300; color:rgba(232,192,106,.5);
-      letter-spacing:2px; margin-top:20px; margin-bottom:28px;
+      font-family:'Cormorant Garamond',serif; font-size:clamp(11px,1.5vw,15px);
+      font-style:italic; font-weight:300; color:rgba(232,192,106,.45);
+      letter-spacing:3px; margin-top:20px; margin-bottom:16px;
     }
-    .loader-progress { width:min(200px,44vw); height:1px; background:rgba(255,255,255,.05); position:relative; overflow:hidden; }
-    .loader-progress-fill {
-      position:absolute; top:0; left:0; height:100%;
-      background:linear-gradient(90deg,var(--primary),var(--gold));
-      animation: progressFill 2.4s cubic-bezier(.25,1,.5,1) forwards;
+
+    /* ── Center-closing progress line ──
+       Sits inline, centred, directly below the wordmark.
+       Two fills close inward from each end of the compact track.   */
+    .loader-progress {
+      position: relative;
+      width: clamp(100px, 22vw, 140px);
+      height: 1px;
+      background: rgba(201,151,58,.18);
+      overflow: visible;
+      margin-top: 4px;
     }
-    @keyframes progressFill { 0%{width:0%} 100%{width:100%} }
+    /* Subtle glow halo on the track */
+    .loader-progress::before {
+      content:'';
+      position: absolute; top: -1px; left: 0; right: 0; height: 3px;
+      background: rgba(201,151,58,.07);
+      filter: blur(2px);
+    }
+    /* Left fill — anchored left:0, grows right to 50% */
+    .loader-progress-fill-left {
+      position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+      background: linear-gradient(90deg, rgba(201,151,58,.6), var(--gold-lt));
+      animation: closingLeft 2.4s cubic-bezier(.25,1,.5,1) forwards;
+      box-shadow: 0 0 4px rgba(232,192,106,.5);
+    }
+    /* Right fill — anchored right:0, grows left to 50% */
+    .loader-progress-fill-right {
+      position: absolute; top: 0; right: 0; height: 100%; width: 0%;
+      background: linear-gradient(270deg, rgba(201,151,58,.6), var(--gold-lt));
+      animation: closingRight 2.4s cubic-bezier(.25,1,.5,1) forwards;
+      box-shadow: 0 0 4px rgba(232,192,106,.5);
+    }
+    @keyframes closingLeft  { 0%{width:0%} 100%{width:50%} }
+    @keyframes closingRight { 0%{width:0%} 100%{width:50%} }
+
+    /* ── Loader decorative background canvas ──
+       Full-bleed SVG behind the wordmark — gold glints, rings, dots. */
+    .loader-bg-canvas{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+
+    background:
+      radial-gradient(circle at center,
+        rgba(140,0,30,.35) 0%,
+        rgba(107,17,38,.15) 40%,
+        rgba(107,17,38,0) 70%),
+
+      radial-gradient(ellipse 60% 70% at 50% 50%,
+        transparent 40%,
+        rgba(26,5,5,.55) 100%),
+
+      radial-gradient(ellipse 100% 30% at 50% 0%,
+        rgba(107,17,38,.8) 0%,
+        transparent 70%),
+
+      radial-gradient(ellipse 100% 30% at 50% 100%,
+        rgba(26,5,5,.7) 0%,
+        transparent 70%),
+
+      var(--primary);
+}
+    .loader-bg-canvas::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    opacity:.35;
+
+    background-image:
+      radial-gradient(circle,
+        rgba(201,151,58,.7) 1px,
+        transparent 1px);
+
+    background-size:62px 62px;
+}
  
     /* ═══════════════════════════ PORTAL ═══ */
     #portal-overlay {
@@ -124,17 +186,31 @@
     #portal-overlay.active { opacity:1; visibility:visible; pointer-events:all; }
     .portal-curtain-left,.portal-curtain-right {
       position:absolute; top:0; height:100%; width:50%;
-      background:var(--bg-dark); transition:transform .9s cubic-bezier(.76,0,.24,1);
+      background: var(--primary); transition:transform .9s cubic-bezier(.76,0,.24,1);
     }
     .portal-curtain-left  { left:0; transform-origin:left; }
     .portal-curtain-right { right:0; transform-origin:right; }
     #portal-overlay.open .portal-curtain-left  { transform:translateX(-100%); }
     #portal-overlay.open .portal-curtain-right { transform:translateX(100%); }
-    .portal-h { position:absolute; z-index:2; width:min(130px,17vw); display:flex; align-items:center; justify-content:center; transform-origin:center center; }
+    /*
+      The "7" merges into the hero section's left half which is var(--primary) = #6b1126.
+      transform-origin is shifted left so the zoom expands toward that column.
+      scale goes high enough that the glyph fully engulfs its own bounding box and
+      the opacity fades to 0 before it becomes visible as a distinct shape.
+    */
+    .portal-h {
+      position:absolute; z-index:2;
+      width:min(130px,17vw);
+      display:flex; align-items:center; justify-content:center;
+      transform-origin: 30% center;
+    }
     .portal-h-svg { width:100%; height:100%; display:block; }
-    .portal-h-text { fill:url(#portal-h-fill); }
-    @keyframes portalHMergeZoom { 0%{transform:scale(1);opacity:1} 100%{transform:scale(4);opacity:0} }
-    #portal-overlay.open .portal-h { animation:portalHMergeZoom .7s cubic-bezier(.25,1,.32,1) forwards; }
+    @keyframes portalHMergeZoom {
+      0%   { transform:scale(1);   opacity:1; }
+      50%  { transform:scale(5);   opacity:0.6; }
+      100% { transform:scale(10);  opacity:0; }
+    }
+    #portal-overlay.open .portal-h { animation:portalHMergeZoom 0.9s cubic-bezier(.2,1,.3,1) forwards; }
  
     /* ═══════════════════════════ NAV ═══ */
     #main-site { opacity:0; transition:opacity .6s ease; }
@@ -462,6 +538,95 @@
 <!-- ──────────── LOADING SCREEN ──────────── -->
 <div id="loading-screen" role="status" aria-label="Loading ALHA">
   <div class="loader-corners"></div>
+
+  <!-- ── Decorative background canvas — gold on burgundy ── -->
+  <div class="loader-bg-canvas"> xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <!-- Fine gold dot grid, 48px spacing -->
+      <pattern id="dot-grid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+        <circle cx="24" cy="24" r="0.7" fill="rgba(201,151,58,0.22)"/>
+      </pattern>
+
+      <!-- Reusable micro star-glint: four-point cross with tapered arms -->
+      <symbol id="glint" viewBox="-8 -8 16 16" overflow="visible">
+        <!-- Horizontal arm -->
+        <line x1="-7" y1="0" x2="7" y2="0"
+              stroke="rgba(232,192,106,0.30)" stroke-width="0.5"
+              stroke-linecap="round"/>
+        <!-- Vertical arm -->
+        <line x1="0" y1="-7" x2="0" y2="7"
+              stroke="rgba(232,192,106,0.30)" stroke-width="0.5"
+              stroke-linecap="round"/>
+        <!-- Diagonal light catch — shorter, finer -->
+        <line x1="-4" y1="-4" x2="4" y2="4"
+              stroke="rgba(232,192,106,0.14)" stroke-width="0.4"
+              stroke-linecap="round"/>
+        <line x1="4" y1="-4" x2="-4" y2="4"
+              stroke="rgba(232,192,106,0.14)" stroke-width="0.4"
+              stroke-linecap="round"/>
+        <!-- Centre accent dot -->
+        <circle cx="0" cy="0" r="0.9" fill="rgba(240,208,128,0.50)"/>
+      </symbol>
+
+      <!-- Reusable thin geometric ring with four tick marks -->
+      <symbol id="accent-ring" viewBox="-22 -22 44 44" overflow="visible">
+        <circle cx="0" cy="0" r="18"
+                fill="none" stroke="rgba(201,151,58,0.18)" stroke-width="0.6"/>
+        <!-- Four cardinal tick marks -->
+        <line x1="0"   y1="-18" x2="0"   y2="-22" stroke="rgba(201,151,58,0.22)" stroke-width="0.5"/>
+        <line x1="0"   y1="18"  x2="0"   y2="22"  stroke="rgba(201,151,58,0.22)" stroke-width="0.5"/>
+        <line x1="-18" y1="0"   x2="-22" y2="0"   stroke="rgba(201,151,58,0.22)" stroke-width="0.5"/>
+        <line x1="18"  y1="0"   x2="22"  y2="0"   stroke="rgba(201,151,58,0.22)" stroke-width="0.5"/>
+      </symbol>
+    </defs>
+
+    <!-- Full-field gold dot grid -->
+    <rect width="100%" height="100%" fill="url(#dot-grid)"/>
+
+    <!-- Corner hairline brackets — gold, 30px arms -->
+    <path d="M 36 62 L 36 36 L 62 36"
+          fill="none" stroke="rgba(201,151,58,0.22)" stroke-width="0.7"/>
+    <path d="M calc(100% - 62px) 36 L calc(100% - 36px) 36 L calc(100% - 36px) 62"
+          fill="none" stroke="rgba(201,151,58,0.22)" stroke-width="0.7"/>
+    <path d="M 36 calc(100% - 62px) L 36 calc(100% - 36px) L 62 calc(100% - 36px)"
+          fill="none" stroke="rgba(201,151,58,0.22)" stroke-width="0.7"/>
+    <path d="M calc(100% - 62px) calc(100% - 36px) L calc(100% - 36px) calc(100% - 36px) L calc(100% - 36px) calc(100% - 62px)"
+          fill="none" stroke="rgba(201,151,58,0.22)" stroke-width="0.7"/>
+
+    <!-- Thin horizontal rule across one-third from top -->
+    <line x1="0" y1="33%" x2="100%" y2="33%"
+          stroke="rgba(201,151,58,0.08)" stroke-width="0.5"/>
+    <!-- Thin horizontal rule across two-thirds -->
+    <line x1="0" y1="67%" x2="100%" y2="67%"
+          stroke="rgba(201,151,58,0.08)" stroke-width="0.5"/>
+    <!-- Vertical centreline -->
+    <line x1="50%" y1="0" x2="50%" y2="100%"
+          stroke="rgba(201,151,58,0.06)" stroke-width="0.5"/>
+
+    <!-- Accent rings — placed at compositional corners -->
+    <use href="#accent-ring" x="10%"  y="14%"/>
+    <use href="#accent-ring" x="90%"  y="14%"/>
+    <use href="#accent-ring" x="10%"  y="86%"/>
+    <use href="#accent-ring" x="90%"  y="86%"/>
+
+    <!-- Star glints scattered at asymmetric editorial positions -->
+    <use href="#glint" x="8%"   y="22%"/>
+    <use href="#glint" x="92%"  y="22%"/>
+    <use href="#glint" x="5%"   y="50%"/>
+    <use href="#glint" x="95%"  y="50%"/>
+    <use href="#glint" x="8%"   y="78%"/>
+    <use href="#glint" x="92%"  y="78%"/>
+    <use href="#glint" x="25%"  y="8%"/>
+    <use href="#glint" x="75%"  y="8%"/>
+    <use href="#glint" x="25%"  y="92%"/>
+    <use href="#glint" x="75%"  y="92%"/>
+    <!-- Lighter mid-edge accent dots -->
+    <circle cx="50%"  cy="5%"   r="1.2" fill="rgba(201,151,58,0.28)"/>
+    <circle cx="50%"  cy="95%"  r="1.2" fill="rgba(201,151,58,0.28)"/>
+    <circle cx="5%"   cy="50%"  r="1.2" fill="rgba(201,151,58,0.28)"/>
+    <circle cx="95%"  cy="50%"  r="1.2" fill="rgba(201,151,58,0.28)"/>
+  </div>
+
   <div class="loader-inner">
     <p class="loader-tag">Est. 2020 &nbsp;·&nbsp; Kerala, India</p>
     <canvas id="loader-3d"></canvas>
@@ -478,7 +643,12 @@
       <div class="orn-line"></div><div class="orn-diamond"></div><div class="orn-line-r orn-line"></div>
     </div>
     <p class="loader-tagline">Luxury Dessert Catering</p>
-    <div class="loader-progress"><div class="loader-progress-fill"></div></div>
+
+    <!-- Center-closing progress line — inline, directly below wordmark -->
+    <div class="loader-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+      <div class="loader-progress-fill-left"></div>
+      <div class="loader-progress-fill-right"></div>
+    </div>
   </div>
 </div>
  
@@ -488,12 +658,10 @@
   <div class="portal-curtain-right"></div>
   <div class="portal-h" aria-hidden="true">
     <svg class="portal-h-svg" id="portal-h-svg" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="portal-h-fill" width="1" height="1" viewBox="0 0 200 160">
-          <image href="jamun.png" x="0" y="0" width="200" height="160" preserveAspectRatio="xMidYMid slice"/>
-        </pattern>
-      </defs>
-      <text class="portal-h-text" id="portal-h-letter" x="0" y="138" font-family="'Abril Fatface', serif" font-size="148" letter-spacing="-2">H</text>
+      <defs></defs>
+      <text class="portal-h-text" id="portal-h-letter" x="0" y="138"
+            font-family="'Abril Fatface', serif" font-size="148" letter-spacing="-2"
+            fill="#6b1126">7</text>
     </svg>
   </div>
 </div>
@@ -714,11 +882,12 @@
 document.fonts.load("148px 'Abril Fatface'").then(buildWordmark).catch(buildWordmark);
 function buildWordmark() {
   const FONT="'Abril Fatface', serif",SIZE=148,BASELINE=138,KERN=-4,VIEW_H=160,PAD=0;
+  // AL7A — butter yellow on deep burgundy background
   const letters=[
-    {ch:'A',img:'mango.png',fill:'#8B2239'},
-    {ch:'L',img:'cupcake.png',fill:'#6B1A2A'},
-    {ch:'H',img:'jamun.png',fill:'#4A0E1A'},
-    {ch:'A',img:'cookie.png',fill:'#8B2239'},
+    {ch:'A', fill:'#E8C97A'},
+    {ch:'L', fill:'#E8C97A'},
+    {ch:'7', fill:'#E8C97A'},
+    {ch:'A', fill:'#E8C97A'},
   ];
   const canvas=document.getElementById('measure-canvas');
   const ctx=canvas.getContext('2d');
@@ -729,7 +898,12 @@ function buildWordmark() {
   svg.setAttribute('viewBox',`0 0 ${Math.ceil(totalW)} ${VIEW_H}`);
   const defs=document.getElementById('alha-defs');
   const fills=document.getElementById('alha-fills');
+  // Clear any previous content
+  defs.innerHTML='';
+  fills.innerHTML='';
+  // alha-images layer is unused — clear it too
   const images=document.getElementById('alha-images');
+  if(images) images.innerHTML='';
   let cursor=PAD;
   letters.forEach((l,i)=>{
     const w=widths[i],id=`cp-${i}`;
@@ -739,33 +913,27 @@ function buildWordmark() {
     txt.setAttribute('x',cursor);txt.setAttribute('y',BASELINE);
     txt.setAttribute('font-family',FONT);txt.setAttribute('font-size',SIZE);
     txt.textContent=l.ch;cp.appendChild(txt);defs.appendChild(cp);
+    // Solid colour fill only — no image layer
     const gf=document.createElementNS('http://www.w3.org/2000/svg','g');
     gf.setAttribute('clip-path',`url(#${id})`);
     const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
     rect.setAttribute('x',cursor);rect.setAttribute('y',0);rect.setAttribute('width',w+2);rect.setAttribute('height',VIEW_H);
     rect.setAttribute('fill',l.fill);gf.appendChild(rect);fills.appendChild(gf);
-    const gi=document.createElementNS('http://www.w3.org/2000/svg','g');
-    gi.setAttribute('clip-path',`url(#${id})`);
-    const img=document.createElementNS('http://www.w3.org/2000/svg','image');
-    img.setAttribute('href',l.img);img.setAttribute('x',cursor);img.setAttribute('y',0);
-    img.setAttribute('width',w+2);img.setAttribute('height',VIEW_H);
-    img.setAttribute('preserveAspectRatio','xMidYMid slice');
-    gi.appendChild(img);images.appendChild(gi);
     cursor+=w+KERN;
   });
+  // Portal 7 — solid fill, no pattern/image
   const pH=document.getElementById('portal-h-letter');
   if(pH){
     pH.setAttribute('font-family',FONT);pH.setAttribute('font-size',SIZE);pH.setAttribute('y',BASELINE);
-    const hW=widths[2];
+    // Index 2 = '7'
+    const sevenW=widths[2];
     const pSvg=document.getElementById('portal-h-svg');
-    pSvg.setAttribute('viewBox',`0 0 ${Math.ceil(hW)} ${VIEW_H}`);
+    pSvg.setAttribute('viewBox',`0 0 ${Math.ceil(sevenW)} ${VIEW_H}`);
     pH.setAttribute('x',0);
-    const pat=pSvg.querySelector('pattern');
-    if(pat){
-      pat.setAttribute('viewBox',`0 0 ${Math.ceil(hW)} ${VIEW_H}`);
-      const pImg=pat.querySelector('image');
-      if(pImg){pImg.setAttribute('width',Math.ceil(hW));pImg.setAttribute('height',VIEW_H);}
-    }
+    pH.setAttribute('fill','#6b1126');
+    // Remove any pattern defs — we use solid fill only
+    const oldDefs=pSvg.querySelector('defs');
+    if(oldDefs) oldDefs.innerHTML='';
   }
 }
  
