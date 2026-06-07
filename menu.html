@@ -529,14 +529,42 @@
       #hero-band { min-height:80vh; }
     }
 
-        /* ═══════════════════════════ MENU CATEGORY CARDS (Home Page) ═══ */
-    #menu-categories-section {
-      padding: clamp(80px, 10vh, 120px) clamp(24px, 6vw, 80px);
+    /* ═══════════════════════════ SPA ROUTING ═══ */
+    .spa-view { display: none; opacity: 0; transition: opacity 0.4s ease; }
+    .spa-view.active { display: block; opacity: 1; animation: fadeIn 0.4s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ═══════════════════════════ MENU VIEW ═══ */
+    #view-menu {
+      min-height: 100vh;
+      padding: clamp(100px, 15vh, 140px) clamp(24px, 6vw, 80px);
       background: var(--bg);
     }
+    
+    .menu-header { text-align: center; margin-bottom: 60px; position: relative; }
+    .menu-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 300; color: var(--primary);
+    }
+    .menu-subtitle {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-top: 10px;
+    }
+    
+    .menu-back-btn {
+      position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      background: none; border: 1px solid rgba(201,151,58,.3);
+      color: var(--primary); padding: 10px 20px;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+      display: none; /* Shown via JS when in grid view */
+    }
+    .menu-back-btn:hover { background: var(--gold); color: var(--bg-dark); }
+
+    /* Landing Cards */
     .menu-categories {
       display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
-      margin-top: 100px;
     }
     .category-card {
       flex: 1; min-width: 300px; max-width: 500px; aspect-ratio: 4/3;
@@ -544,7 +572,6 @@
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 10px 30px rgba(42,26,26,.05);
       border: 1px solid rgba(201,151,58,.2); transition: transform 0.4s;
-      text-decoration: none;
     }
     .category-card:hover { transform: translateY(-5px); }
     .category-card::before {
@@ -561,65 +588,61 @@
     .category-card h3 {
       position: relative; z-index: 2; font-family: 'Cormorant Garamond', serif;
       font-size: clamp(30px, 4vw, 48px); font-weight: 300; color: var(--cream);
-      text-align: center; pointer-events: none; margin: 0;
+      text-align: center; pointer-events: none;
     }
-    .menu-info {
-      max-width: 1200px;
-      margin: 60px auto 0;
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 36px;
-      align-items: center;
-      padding-top: 40px;
+
+    /* Product Grid */
+    .menu-product-section { display: none; animation: fadeIn 0.4s ease forwards; }
+    .product-notice {
+      text-align: center; font-size: 14px; font-style: italic;
+      color: var(--text-lt); margin-bottom: 40px; padding: 20px;
+      border-top: 1px solid rgba(201,151,58,.2); border-bottom: 1px solid rgba(201,151,58,.2);
     }
-    .menu-info-text {
-      max-width: 560px;
+    .product-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 40px;
     }
-    .menu-section-eyebrow {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: var(--gold);
-      margin-bottom: 18px;
+    
+    /* Product Card */
+    .product-card {
+      background: var(--cream); border: 1px solid rgba(201,151,58,.15);
+      padding: 20px; text-align: center; transition: transform 0.3s, box-shadow 0.3s;
+      display: flex; flex-direction: column; height: 100%;
     }
-    .menu-info-text h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(32px, 4vw, 48px);
-      line-height: 1.05;
-      margin-bottom: 18px;
-      color: var(--primary);
+    .product-card:hover {
+      transform: translateY(-5px); box-shadow: 0 15px 40px rgba(42,26,26,.08);
     }
-    .menu-info-text p {
-      font-size: 16px;
-      line-height: 1.9;
-      color: var(--text-lt);
+    .product-img-wrap { width: 100%; aspect-ratio: 1; overflow: hidden; margin-bottom: 20px; border-radius: 4px; }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .product-card:hover .product-img-wrap img { transform: scale(1.08); }
+    .product-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400;
+      color: var(--primary); margin-bottom: 10px;
     }
-    .menu-benefits {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+    .product-price { font-size: 14px; color: var(--text-lt); margin-bottom: 20px; font-weight: 500; }
+    
+    .qty-wrap {
+      display: flex; align-items: center; justify-content: center; gap: 15px;
+      margin-bottom: 20px; margin-top: auto;
     }
-    .benefit-card {
-      background: rgba(250,246,238,.55);
-      border: 1px solid rgba(201,151,58,.12);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 18px 40px rgba(42,26,26,.05);
+    .qty-btn {
+      width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(201,151,58,.4);
+      background: transparent; color: var(--primary); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+      transition: background 0.2s, color 0.2s;
     }
-    .benefit-card h3 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: var(--primary);
+    .qty-btn:hover { background: var(--primary); color: var(--cream); }
+    .qty-input {
+      width: 40px; text-align: center; font-family: 'Jost', sans-serif;
+      font-size: 16px; border: none; background: transparent; color: var(--text);
     }
-    .benefit-card p {
-      font-size: 14px;
-      line-height: 1.8;
-      color: var(--text-lt);
+    
+    .add-to-cart-btn {
+      width: 100%; padding: 12px; background: var(--primary); color: var(--cream);
+      border: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: background 0.3s;
     }
-    @media (max-width: 900px) {
-      .menu-info { grid-template-columns: 1fr; }
-      .menu-benefits { grid-template-columns: 1fr; }
-    }
+    .add-to-cart-btn:hover { background: var(--gold); color: var(--bg-dark); }
   </style>
 </head>
 <body>
@@ -632,7 +655,7 @@
   <div class="loader-corners"></div>
 
   <!-- ── Decorative background canvas — gold on burgundy ── -->
-  <div class="loader-bg-canvas"> 
+  <div class="loader-bg-canvas">
     <defs>
       <!-- Fine gold dot grid, 48px spacing -->
       <pattern id="dot-grid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
@@ -776,149 +799,42 @@
     </div>
   </nav>
  
-  <div id="view-home" class="spa-view active">
-  <!-- ── HERO (Three.js canvas inside) ── -->
-  <section id="hero-band" aria-label="Welcome">
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
-    <div class="hero-content">
-      <p class="hero-eyebrow">Handcrafted with Love</p>
-      <h1 class="hero-heading">Where Every <em>Bite</em><br>Tells a Story</h1>
-      <p class="hero-sub">Artisan desserts for weddings, celebrations & intimate gatherings</p>
-      <div class="hero-divider">
-        <div class="hero-divider-line"></div><div class="hero-divider-gem"></div><div class="hero-divider-line"></div>
-      </div>
-      <div class="hero-cta-wrap">
-        <a href="#" class="hero-cta-primary">Explore Our Menu</a>
-        <a href="#" class="hero-cta-secondary"><span>▶</span> View Signature Collection</a>
-      </div>
+  
+
+  <div id="view-menu">
+    <div class="menu-header">
+      <button class="menu-back-btn" id="menu-back" aria-label="Back to Categories">← Back</button>
+      <h2 class="menu-title" id="menu-main-title">Our Offerings</h2>
+      <p class="menu-subtitle">Select a category</p>
     </div>
-    <div class="hero-scroll-hint" aria-hidden="true">
-      <div class="scroll-mouse"></div><p>Scroll to Discover</p>
-    </div>
-  </section>
-  <section id="menu-categories-section">
-    <div class="menu-info">
-      <div class="menu-info-text">
-        <p class="menu-section-eyebrow">Discover your perfect dessert plan</p>
-        <h2>Designed for celebrations large and small</h2>
-        <p>From lavish banquet spreads to intimate dessert hampers, ALHA combines premium ingredients with elegant presentation. Browse the categories to find the ideal option for your event, and enjoy effortless planning with our personalised ordering support.</p>
-      </div>
-      <div class="menu-benefits">
-        <article class="benefit-card">
-          <h3>Event-ready menus</h3>
-          <p>Flexible bulk offerings tailored for weddings, corporate events and family celebrations.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Handcrafted small orders</h3>
-          <p>Perfectly portioned desserts for gifting, parties, or personal indulgence.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Premium service</h3>
-          <p>Expert guidance, custom packaging, and delivery that keeps every treat picture-perfect.</p>
-        </article>
-      </div>
-    </div>
-    <div class="menu-categories">
-      <a href="menu.html?category=events" class="category-card" data-category="events">
+
+    <!-- Category Selection -->
+    <div class="menu-categories" id="menu-landing">
+      <div class="category-card" data-category="events">
         <img src="events1.jpeg" alt="Events Category">
         <h3>Events (Bulk Orders)</h3>
-      </a>
-      <a href="menu.html?category=small" class="category-card" data-category="small">
+      </div>
+      <div class="category-card" data-category="small">
         <img src="events3.jpeg" alt="Small Quantity Category">
         <h3>Small Quantity Orders</h3>
-      </a>
+      </div>
     </div>
-  </section>
 
- 
-  <!-- Stats Band -->
-  <div id="stats-band" aria-label="Our milestones">
-    <div class="stat-item"><span class="stat-number" data-target="500" data-suffix="+">0</span><span class="stat-label">Events Catered</span></div>
-    <div class="stat-item"><span class="stat-number" data-target="12">0</span><span class="stat-label">Signature Collections</span></div>
-    <div class="stat-item"><span class="stat-number" data-target="4">0</span><span class="stat-label">Years of Craft</span></div>
-    <div class="stat-item"><span class="stat-number" data-target="98" data-suffix="%">0</span><span class="stat-label">Happy Clients</span></div>
-  </div>
- 
-  <main>
-    <section id="story-timeline" aria-label="Our story">
-      <svg id="path-canvas" aria-hidden="true">
-        <defs>
-          <filter id="path-glow">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-        </defs>
-        <path id="zigzag-path-draw" fill="none" stroke="rgba(201,151,58,.55)" stroke-width="1.5" stroke-dasharray="0" stroke-dashoffset="0" filter="url(#path-glow)"/>
-        <path id="zigzag-path-ghost" fill="none" stroke="rgba(201,151,58,.1)" stroke-width="1.5" stroke-dasharray="6 6"/>
-        <g id="path-nodes"></g>
-      </svg>
-      <div id="sphere" role="presentation" aria-hidden="true"></div>
- 
-      <!-- Section 1 -->
-      <article class="story-section left-image" data-section="0">
-        <span class="section-num" aria-hidden="true">01</span>
-        <div class="section-image-wrap reveal-img">
-          <div class="section-image-inner">
-            <img src="events1.jpeg" alt="Elegant dessert catering at a wedding event" loading="eager" />
-            <div class="img-overlay"></div>
-          </div>
-        </div>
-        <div class="section-text reveal-text">
-          <p class="section-eyebrow">01 — Artisan Craft</p>
-          <h2 class="section-heading">Elegant Dessert<br><em>Catering</em></h2>
-          <div class="section-rule"><div class="section-rule-line"></div><div class="section-rule-gem"></div></div>
-          <p class="section-body">Handcrafted desserts for weddings, celebrations, and special events. Every creation is made with care and delivered with the kind of elegance that turns moments into memories.</p>
-          <a href="#" class="section-cta"><span>Explore Menu</span><span class="section-cta-arrow">→</span></a>
-        </div>
-      </article>
- 
-      <!-- Section 2 -->
-      <article class="story-section right-image" data-section="1">
-        <span class="section-num" aria-hidden="true">02</span>
-        <div class="section-image-wrap reveal-img">
-          <div class="section-image-inner">
-            <img src="events2.jpeg" alt="Beautiful dessert presentation" loading="lazy" />
-            <div class="img-overlay"></div>
-          </div>
-        </div>
-        <div class="section-text reveal-text">
-          <p class="section-eyebrow">02 — Events & Gatherings</p>
-          <h2 class="section-heading">Beautiful<br><em>Presentations</em></h2>
-          <div class="section-rule"><div class="section-rule-line"></div><div class="section-rule-gem"></div></div>
-          <p class="section-body">We bring artistry to every table, every occasion. Our dessert presentations are designed for unforgettable experiences — from intimate dinners to grand ballrooms.</p>
-          <a href="#" class="section-cta"><span>Book an Event</span><span class="section-cta-arrow">→</span></a>
-        </div>
-      </article>
- 
-      <!-- Section 3 -->
-      <article class="story-section left-image" data-section="2">
-        <span class="section-num" aria-hidden="true">03</span>
-        <div class="section-image-wrap reveal-img">
-          <div class="section-image-inner">
-            <img src="events3.jpeg" alt="Premium desserts for intimate occasions" loading="lazy" />
-            <div class="img-overlay"></div>
-          </div>
-        </div>
-        <div class="section-text reveal-text">
-          <p class="section-eyebrow">03 — Personal Indulgence</p>
-          <h2 class="section-heading">Intimate<br><em>Occasions</em></h2>
-          <div class="section-rule"><div class="section-rule-line"></div><div class="section-rule-gem"></div></div>
-          <p class="section-body">Order premium desserts for intimate occasions or personal enjoyment. Luxury at your doorstep — whenever the moment calls for something truly special.</p>
-          <a href="#" class="section-cta"><span>Order Now</span><span class="section-cta-arrow">→</span></a>
-        </div>
-      </article>
-    </section>
- 
-    <!-- Quote with Three.js particles -->
-    <section id="quote-interlude" aria-label="Our philosophy">
-      <canvas id="quote-canvas" aria-hidden="true"></canvas>
-      <p class="quote-text reveal-quote">"We don't just make desserts — we craft the sweetest chapters of your story."</p>
-      <p class="quote-attr reveal-quote" style="transition-delay:.2s;">— The ALHA Philosophy</p>
-    </section>
-  </main>
-  </div><!-- /#view-home -->
+    <!-- Events Grid -->
+    <div class="menu-product-section" id="section-events">
+      <p class="product-notice">* Prices vary based on quantity and event requirements. Final pricing will be discussed after order submission.</p>
+      <div class="product-grid" id="grid-events">
+        <!-- Render via JS -->
+      </div>
+    </div>
 
-  
+    <!-- Small Qty Grid -->
+    <div class="menu-product-section" id="section-small">
+      <div class="product-grid" id="grid-small">
+        <!-- Render via JS -->
+      </div>
+    </div>
+  </div><!-- /#view-menu -->
  
   <footer role="contentinfo">
     <div class="footer-top">
@@ -1545,9 +1461,110 @@ setTimeout(()=>{
 })();
 
 /* ════════════════════════════════════════════════════════
-   9. GLOBAL CART LOGIC
+   9. MENU SPA LOGIC & CART
 ════════════════════════════════════════════════════════ */
 (function() {
+  const viewHome = document.getElementById('view-home');
+  const viewMenu = document.getElementById('view-menu');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  
+  // Elements inside Menu
+  const menuLanding = document.getElementById('menu-landing');
+  const sectionEvents = document.getElementById('section-events');
+  const sectionSmall = document.getElementById('section-small');
+  const menuBackBtn = document.getElementById('menu-back');
+  const menuMainTitle = document.getElementById('menu-main-title');
+  const gridEvents = document.getElementById('grid-events');
+  const gridSmall = document.getElementById('grid-small');
+
+  function showMenuLanding() {
+    menuLanding.style.display = 'flex';
+    sectionEvents.style.display = 'none';
+    sectionSmall.style.display = 'none';
+    menuBackBtn.style.display = 'none';
+    menuMainTitle.textContent = 'Our Offerings';
+    window.history.replaceState({}, '', 'menu.html');
+  }
+
+  function showCategory(category) {
+    menuLanding.style.display = 'none';
+    menuBackBtn.style.display = 'block';
+    
+    if(category === 'events') {
+      sectionEvents.style.display = 'block';
+      sectionSmall.style.display = 'none';
+      menuMainTitle.textContent = 'Events (Bulk Orders)';
+    } else {
+      sectionSmall.style.display = 'block';
+      sectionEvents.style.display = 'none';
+      menuMainTitle.textContent = 'Small Quantity Orders';
+    }
+  }
+
+  document.querySelectorAll('.category-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const cat = card.getAttribute('data-category');
+      window.history.pushState({}, '', 'menu.html?category=' + cat);
+      showCategory(cat);
+    });
+  });
+  
+  menuBackBtn.addEventListener('click', () => {
+    window.location.href = 'index.html#menu-categories-section';
+  });
+  
+  // Handle URL params on load
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryParam = urlParams.get('category');
+  if (categoryParam === 'events' || categoryParam === 'small') {
+    showCategory(categoryParam);
+  } else {
+    showMenuLanding();
+  }
+
+  // Mock Products Data
+  const products = {
+    events: [
+      { id: 'e1', name: 'Macaron Tower', image: 'events1.jpeg' },
+      { id: 'e2', name: 'Wedding Dessert Table', image: 'events2.jpeg' },
+      { id: 'e3', name: 'Custom Artisan Cupcakes', image: 'cupcake.png' }
+    ],
+    small: [
+      { id: 's1', name: 'Signature Chocolate Chip Cookie', image: 'cookie.png', price: 150 },
+      { id: 's2', name: 'Mango Pudding Cup', image: 'mango.png', price: 250 },
+      { id: 's3', name: 'Jamun Delight', image: 'jamun.png', price: 300 },
+      { id: 's4', name: 'Red Velvet Cupcake', image: 'cupcake.png', price: 180 }
+    ]
+  };
+
+  // Render Products
+  function renderProducts(type, container, data) {
+    container.innerHTML = data.map(item => `
+      <div class="product-card">
+        <div class="product-img-wrap"><img src="${item.image}" alt="${item.name}"></div>
+        <h4 class="product-name">${item.name}</h4>
+        ${type === 'small' ? `<p class="product-price">₹${item.price}</p>` : ''}
+        <div class="qty-wrap">
+          <button class="qty-btn" onclick="modifyQty('${item.id}', -1)">-</button>
+          <input type="number" id="qty-${item.id}" class="qty-input" value="1" min="1" readonly>
+          <button class="qty-btn" onclick="modifyQty('${item.id}', 1)">+</button>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('${item.id}', '${type}')">Add to Cart</button>
+      </div>
+    `).join('');
+  }
+
+  renderProducts('events', gridEvents, products.events);
+  renderProducts('small', gridSmall, products.small);
+
+  // Global functions for inline handlers
+  window.modifyQty = function(id, delta) {
+    const input = document.getElementById(`qty-${id}`);
+    let val = parseInt(input.value) + delta;
+    if(val < 1) val = 1;
+    input.value = val;
+  };
+
   // Cart logic
   let cart = JSON.parse(localStorage.getItem('alha_cart')) || [];
   
