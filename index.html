@@ -529,6 +529,465 @@
       #hero-band { min-height:80vh; }
     }
 
+    /* ═══════════════════════════ SPA VIEWS ═══ */
+    .spa-view { display:none; }
+    .spa-view.active { display:block; }
+
+    /* ═══════════════════════════ PAGE HERO (shared) ═══ */
+    .page-hero {
+      background: var(--primary); position:relative; overflow:hidden;
+      padding: clamp(80px,13vh,140px) clamp(32px,8vw,100px) clamp(60px,8vh,90px);
+      text-align:center;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(26,5,5,.7) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 50% 0%, rgba(107,17,38,.8) 0%, transparent 70%);
+    }
+    .page-hero-bg-dots {
+      position:absolute; inset:0; pointer-events:none; opacity:.25;
+      background-image: radial-gradient(circle, rgba(201,151,58,.6) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+    .page-hero-content { position:relative; z-index:1; }
+    .page-hero-eyebrow {
+      font-size:9px; letter-spacing:5px; text-transform:uppercase; font-weight:400;
+      color:rgba(201,151,58,.65); margin-bottom:18px;
+      display:flex; align-items:center; justify-content:center; gap:12px;
+    }
+    .page-hero-eyebrow::before,.page-hero-eyebrow::after { content:'✦'; font-size:6px; color:rgba(201,151,58,.35); }
+    .page-hero-title {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(44px,8vw,96px);
+      font-weight:300; color:var(--cream); letter-spacing:-1px; line-height:1;
+      margin-bottom:16px;
+    }
+    .page-hero-title em { font-style:italic; color:var(--gold-lt); }
+    .page-hero-sub {
+      font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300;
+      font-size:clamp(15px,1.8vw,20px); color:rgba(250,246,238,.45); letter-spacing:1px;
+    }
+    .page-hero-rule {
+      display:flex; align-items:center; justify-content:center; gap:14px;
+      margin: 24px auto 0;
+    }
+    .page-hero-rule-line { width:50px; height:1px; background:rgba(201,151,58,.3); }
+    .page-hero-rule-gem  { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); opacity:.6; }
+
+    /* ═══════════════════════════ ABOUT PAGE ═══ */
+    #view-about .about-intro {
+      padding: clamp(72px,10vh,120px) clamp(32px,8vw,120px);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+      background: var(--cream);
+    }
+    @media(max-width:768px){ #view-about .about-intro { grid-template-columns:1fr; gap:40px; } }
+
+    .about-intro-text .about-label {
+      font-size:9px; letter-spacing:4px; text-transform:uppercase;
+      color:var(--gold); margin-bottom:20px; display:flex; align-items:center; gap:10px;
+    }
+    .about-intro-text .about-label::before { content:''; width:24px; height:1px; background:var(--gold); opacity:.5; }
+    .about-intro-text h2 {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(30px,4vw,52px);
+      font-weight:300; color:var(--primary); line-height:1.1; margin-bottom:24px;
+    }
+    .about-intro-text h2 em { font-style:italic; }
+    .about-intro-text p {
+      font-size:clamp(14px,1.2vw,17px); font-weight:300; line-height:1.95;
+      color:var(--text-lt); margin-bottom:18px;
+    }
+    .about-visual {
+      position:relative;
+    }
+    .about-visual-frame {
+      position:relative; overflow:hidden; aspect-ratio:3/4;
+      border:1px solid rgba(201,151,58,.2);
+    }
+    .about-visual-frame::before {
+      content:''; position:absolute; top:-14px; left:-14px; right:14px; bottom:14px;
+      border:1px solid rgba(201,151,58,.12); pointer-events:none; z-index:0;
+    }
+    .about-visual-img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      transition: transform 1s cubic-bezier(.4,0,.2,1);
+    }
+    .about-visual-frame:hover .about-visual-img { transform:scale(1.04); }
+    .about-visual-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(160deg, rgba(107,17,38,.15) 0%, transparent 50%);
+    }
+    .about-visual-tag {
+      position:absolute; bottom:24px; left:24px; z-index:2;
+      background:rgba(26,15,15,.85); backdrop-filter:blur(12px);
+      padding:14px 20px; border-left:2px solid var(--gold);
+    }
+    .about-visual-tag strong {
+      display:block; font-family:'Cormorant Garamond',serif;
+      font-size:22px; font-weight:300; color:var(--cream); letter-spacing:1px;
+    }
+    .about-visual-tag span {
+      font-size:9px; letter-spacing:3px; text-transform:uppercase; color:rgba(201,151,58,.6);
+    }
+
+    /* About values grid */
+    .about-values {
+      background: var(--bg); padding: clamp(72px,10vh,120px) clamp(32px,8vw,120px);
+    }
+    .about-values-header { text-align:center; max-width:600px; margin:0 auto 64px; }
+    .about-values-header h2 {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px);
+      font-weight:300; color:var(--primary); margin-top:12px;
+    }
+    .values-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:32px;
+    }
+    .value-card {
+      padding:40px 32px; border:1px solid rgba(201,151,58,.15);
+      background:var(--cream); position:relative; overflow:hidden;
+      transition: transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s;
+    }
+    .value-card::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform:scaleX(0); transition:transform .5s cubic-bezier(.4,0,.2,1);
+    }
+    .value-card:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(42,26,26,.08); }
+    .value-card:hover::after { transform:scaleX(1); }
+    .value-icon {
+      font-size:28px; margin-bottom:20px; display:block;
+      filter: drop-shadow(0 2px 6px rgba(201,151,58,.3));
+    }
+    .value-card h3 {
+      font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:400;
+      color:var(--primary); margin-bottom:14px; letter-spacing:.3px;
+    }
+    .value-card p { font-size:14px; line-height:1.85; color:var(--text-lt); font-weight:300; }
+
+    /* About team section */
+    .about-founders {
+      background:var(--primary); padding: clamp(72px,10vh,120px) clamp(32px,8vw,120px);
+      position:relative; overflow:hidden; text-align:center;
+    }
+    .about-founders::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background-image:radial-gradient(circle, rgba(201,151,58,.08) 1px, transparent 1px);
+      background-size:40px 40px;
+    }
+    .about-founders-header { position:relative; z-index:1; max-width:560px; margin:0 auto 60px; }
+    .about-founders-header h2 {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px);
+      font-weight:300; color:var(--cream); margin-top:12px; line-height:1.1;
+    }
+    .about-founders-header p { font-size:15px; line-height:1.8; color:rgba(250,246,238,.45); margin-top:14px; }
+    .founders-grid {
+      display:flex; gap:40px; justify-content:center; flex-wrap:wrap;
+      position:relative; z-index:1;
+    }
+    .founder-card {
+      flex:1; min-width:240px; max-width:320px; text-align:center;
+    }
+    .founder-avatar {
+      width:100px; height:100px; border-radius:50%;
+      border:2px solid rgba(201,151,58,.4);
+      background:rgba(201,151,58,.1);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Cormorant Garamond',serif; font-size:36px;
+      color:var(--gold); margin:0 auto 20px;
+      box-shadow:0 0 40px rgba(201,151,58,.15);
+      transition: box-shadow .4s, border-color .4s;
+    }
+    .founder-card:hover .founder-avatar {
+      box-shadow:0 0 60px rgba(201,151,58,.3); border-color:rgba(201,151,58,.7);
+    }
+    .founder-name {
+      font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300;
+      color:var(--cream); margin-bottom:6px;
+    }
+    .founder-role {
+      font-size:9px; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(201,151,58,.55); margin-bottom:16px;
+    }
+    .founder-bio { font-size:13px; line-height:1.8; color:rgba(250,246,238,.35); font-weight:300; }
+
+    /* About timeline */
+    .about-journey {
+      padding: clamp(72px,10vh,120px) clamp(32px,8vw,120px);
+      background:var(--cream);
+    }
+    .about-journey-header { text-align:center; max-width:560px; margin:0 auto 64px; }
+    .about-journey-header h2 {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(30px,4vw,50px);
+      font-weight:300; color:var(--primary); margin-top:12px;
+    }
+    .journey-list { max-width:720px; margin:0 auto; position:relative; }
+    .journey-list::before {
+      content:''; position:absolute; left:32px; top:0; bottom:0;
+      width:1px; background:linear-gradient(180deg, transparent, rgba(201,151,58,.3) 10%, rgba(201,151,58,.3) 90%, transparent);
+    }
+    .journey-item {
+      display:flex; gap:40px; padding:32px 0; position:relative;
+      opacity:0; transform:translateX(-24px);
+      transition:opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1);
+    }
+    .journey-item.in-view { opacity:1; transform:translateX(0); }
+    .journey-item:nth-child(1){ transition-delay:.05s; }
+    .journey-item:nth-child(2){ transition-delay:.15s; }
+    .journey-item:nth-child(3){ transition-delay:.25s; }
+    .journey-item:nth-child(4){ transition-delay:.35s; }
+    .journey-year-col {
+      flex-shrink:0; width:64px; text-align:center; position:relative;
+    }
+    .journey-dot {
+      width:12px; height:12px; border-radius:50%;
+      background:var(--gold); border:3px solid var(--cream);
+      box-shadow:0 0 0 1px rgba(201,151,58,.4), 0 0 16px rgba(201,151,58,.4);
+      margin:0 auto 10px; position:relative; z-index:1;
+    }
+    .journey-year {
+      font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:300;
+      color:var(--primary); letter-spacing:1px;
+    }
+    .journey-body h3 {
+      font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:400;
+      color:var(--primary); margin-bottom:8px;
+    }
+    .journey-body p { font-size:14px; line-height:1.85; color:var(--text-lt); font-weight:300; }
+
+    /* ═══════════════════════════ EVENTS / BLOG PAGE ═══ */
+    #view-events .events-content {
+      padding: clamp(64px,8vh,100px) clamp(32px,8vw,120px);
+      background: var(--bg);
+    }
+    .blog-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+      gap:40px; margin-top:0;
+    }
+    @media(max-width:768px){ .blog-grid { grid-template-columns:1fr; } }
+    .blog-card {
+      background:var(--cream); border:1px solid rgba(201,151,58,.12);
+      overflow:hidden; position:relative;
+      opacity:0; transform:translateY(28px);
+      transition:opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1),
+                 box-shadow .4s;
+    }
+    .blog-card.in-view { opacity:1; transform:translateY(0); }
+    .blog-card:nth-child(1){ transition-delay:.0s; }
+    .blog-card:nth-child(2){ transition-delay:.1s; }
+    .blog-card:nth-child(3){ transition-delay:.2s; }
+    .blog-card:nth-child(4){ transition-delay:.05s; }
+    .blog-card:nth-child(5){ transition-delay:.15s; }
+    .blog-card:nth-child(6){ transition-delay:.25s; }
+    .blog-card:hover { box-shadow:0 20px 60px rgba(42,26,26,.09); }
+    .blog-card-img {
+      width:100%; aspect-ratio:16/9; object-fit:cover; display:block;
+      transition:transform .8s cubic-bezier(.4,0,.2,1);
+    }
+    .blog-card:hover .blog-card-img { transform:scale(1.04); }
+    .blog-card-img-wrap { overflow:hidden; position:relative; }
+    .blog-card-img-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, transparent 50%, rgba(26,15,15,.35) 100%);
+    }
+    .blog-card-cat {
+      position:absolute; top:16px; left:16px;
+      background:var(--primary); color:var(--gold-lt);
+      font-size:8px; letter-spacing:3px; text-transform:uppercase;
+      padding:5px 12px;
+    }
+    .blog-card-body { padding:28px 28px 32px; }
+    .blog-card-meta {
+      display:flex; align-items:center; gap:10px; margin-bottom:14px;
+    }
+    .blog-card-date { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(42,26,26,.35); }
+    .blog-card-meta-dot { width:3px; height:3px; border-radius:50%; background:rgba(201,151,58,.4); }
+    .blog-card-read { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(201,151,58,.6); }
+    .blog-card-title {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(18px,2vw,24px);
+      font-weight:300; color:var(--primary); line-height:1.3; margin-bottom:14px;
+      transition:color .25s;
+    }
+    .blog-card:hover .blog-card-title { color:var(--gold); }
+    .blog-card-excerpt { font-size:13px; line-height:1.85; color:var(--text-lt); font-weight:300; margin-bottom:22px; }
+    .blog-card-link {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+      color:var(--primary); text-decoration:none;
+      transition:gap .3s, color .25s;
+    }
+    .blog-card-link:hover { gap:14px; color:var(--gold); }
+    .blog-card-link-arrow { font-size:14px; transition:transform .3s; }
+    .blog-card:hover .blog-card-link-arrow { transform:translateX(4px); }
+
+    /* Featured/hero post */
+    .blog-featured {
+      display:grid; grid-template-columns:1.1fr 1fr; gap:0;
+      margin-bottom:56px; background:var(--cream); border:1px solid rgba(201,151,58,.12);
+      overflow:hidden;
+      opacity:0; transform:translateY(24px);
+      transition:opacity .9s cubic-bezier(.4,0,.2,1), transform .9s cubic-bezier(.4,0,.2,1);
+    }
+    .blog-featured.in-view { opacity:1; transform:translateY(0); }
+    @media(max-width:768px){ .blog-featured { grid-template-columns:1fr; } }
+    .blog-featured-img-wrap { overflow:hidden; position:relative; min-height:360px; }
+    .blog-featured-img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 1s cubic-bezier(.4,0,.2,1); }
+    .blog-featured:hover .blog-featured-img { transform:scale(1.04); }
+    .blog-featured-tag {
+      position:absolute; top:24px; left:24px;
+      background:var(--gold); color:var(--bg-dark);
+      font-size:8px; letter-spacing:3px; text-transform:uppercase;
+      padding:6px 14px;
+    }
+    .blog-featured-body {
+      padding:48px 44px; display:flex; flex-direction:column; justify-content:center;
+    }
+    .blog-featured-body .blog-card-meta { margin-bottom:18px; }
+    .blog-featured-title {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(22px,3vw,36px);
+      font-weight:300; color:var(--primary); line-height:1.2; margin-bottom:16px;
+    }
+    .blog-featured-excerpt { font-size:14px; line-height:1.9; color:var(--text-lt); font-weight:300; margin-bottom:28px; }
+
+    /* Events filters */
+    .blog-filters {
+      display:flex; gap:12px; flex-wrap:wrap; margin-bottom:48px;
+    }
+    .blog-filter-btn {
+      font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+      padding:9px 20px; border:1px solid rgba(201,151,58,.25);
+      background:transparent; color:rgba(42,26,26,.5); cursor:pointer;
+      transition:all .25s; font-family:'Jost',sans-serif;
+    }
+    .blog-filter-btn:hover,.blog-filter-btn.active {
+      background:var(--primary); color:var(--cream); border-color:var(--primary);
+    }
+
+    /* ═══════════════════════════ CONTACT PAGE ═══ */
+    #view-contact .contact-content {
+      padding: clamp(64px,8vh,100px) clamp(32px,8vw,120px);
+      background:var(--bg);
+    }
+    .contact-layout {
+      display:grid; grid-template-columns:1fr 1.4fr; gap:80px; max-width:1200px; margin:0 auto;
+      align-items:start;
+    }
+    @media(max-width:900px){ .contact-layout { grid-template-columns:1fr; gap:56px; } }
+    .contact-info-label {
+      font-size:9px; letter-spacing:4px; text-transform:uppercase;
+      color:var(--gold); margin-bottom:20px; display:flex; align-items:center; gap:10px;
+    }
+    .contact-info-label::before { content:''; width:24px; height:1px; background:var(--gold); opacity:.5; }
+    .contact-info h2 {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(28px,3.5vw,44px);
+      font-weight:300; color:var(--primary); line-height:1.1; margin-bottom:22px;
+    }
+    .contact-info p { font-size:15px; line-height:1.9; color:var(--text-lt); font-weight:300; margin-bottom:36px; }
+    .contact-details { display:flex; flex-direction:column; gap:20px; }
+    .contact-detail-item {
+      display:flex; align-items:flex-start; gap:16px;
+      padding:20px; background:var(--cream); border:1px solid rgba(201,151,58,.12);
+      position:relative; overflow:hidden;
+      transition:transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s;
+    }
+    .contact-detail-item::after {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+      background:var(--gold); transform:scaleY(0); transition:transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .contact-detail-item:hover { transform:translateX(4px); box-shadow:0 8px 30px rgba(42,26,26,.06); }
+    .contact-detail-item:hover::after { transform:scaleY(1); }
+    .contact-detail-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+    .contact-detail-body strong {
+      display:block; font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+      color:var(--primary); margin-bottom:4px;
+    }
+    .contact-detail-body span { font-size:14px; color:var(--text-lt); font-weight:300; line-height:1.7; }
+
+    /* Contact form */
+    .contact-form-wrap {
+      background:var(--cream); padding:48px; border:1px solid rgba(201,151,58,.12);
+      position:relative; overflow:hidden;
+    }
+    .contact-form-wrap::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .contact-form-title {
+      font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300;
+      color:var(--primary); margin-bottom:6px;
+    }
+    .contact-form-sub { font-size:13px; color:var(--text-lt); font-weight:300; margin-bottom:36px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    @media(max-width:600px){ .form-row { grid-template-columns:1fr; } }
+    .form-group { margin-bottom:20px; }
+    .form-label {
+      display:block; font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+      color:rgba(42,26,26,.5); margin-bottom:8px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width:100%; padding:14px 16px;
+      background:var(--bg); border:1px solid rgba(201,151,58,.2);
+      font-family:'Jost',sans-serif; font-size:14px; font-weight:300;
+      color:var(--text); outline:none;
+      transition:border-color .25s, box-shadow .25s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color:rgba(201,151,58,.6);
+      box-shadow:0 0 0 3px rgba(201,151,58,.08);
+    }
+    .form-textarea { resize:vertical; min-height:120px; }
+    .form-select { appearance:none; cursor:pointer; }
+    .form-submit {
+      display:inline-flex; align-items:center; gap:12px;
+      padding:16px 40px; background:var(--primary); color:var(--cream);
+      font-family:'Jost',sans-serif; font-size:10px; font-weight:400;
+      letter-spacing:2.5px; text-transform:uppercase; border:none; cursor:pointer;
+      transition:background .3s, transform .25s, box-shadow .25s;
+      box-shadow:0 8px 30px rgba(107,17,38,.25);
+    }
+    .form-submit:hover { background:var(--primary-dk); transform:translateY(-2px); box-shadow:0 14px 40px rgba(107,17,38,.35); }
+    .form-submit-icon { font-size:16px; transition:transform .3s; }
+    .form-submit:hover .form-submit-icon { transform:translateX(4px); }
+    .form-success {
+      display:none; padding:20px 24px;
+      background:rgba(201,151,58,.1); border:1px solid rgba(201,151,58,.3);
+      text-align:center; margin-top:20px;
+    }
+    .form-success p { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--primary); }
+
+    /* Contact map placeholder */
+    .contact-map-section {
+      padding:0 clamp(32px,8vw,120px) clamp(64px,8vh,100px);
+      background:var(--bg);
+    }
+    .contact-map-label {
+      font-size:9px; letter-spacing:4px; text-transform:uppercase;
+      color:var(--gold); margin-bottom:20px; display:flex; align-items:center; gap:10px;
+    }
+    .contact-map-label::before { content:''; width:24px; height:1px; background:var(--gold); opacity:.5; }
+    .contact-map-frame {
+      position:relative; width:100%; padding-bottom:40%; min-height:280px;
+      background:var(--cream); border:1px solid rgba(201,151,58,.12);
+      overflow:hidden;
+    }
+    .contact-map-inner {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+    }
+    .contact-map-pin { font-size:36px; animation:mapPinBounce 2s ease infinite; }
+    @keyframes mapPinBounce {
+      0%,100%{ transform:translateY(0); }
+      50%{ transform:translateY(-8px); }
+    }
+    .contact-map-text {
+      font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:300; color:var(--primary);
+    }
+    .contact-map-sub { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(42,26,26,.35); }
+    .contact-map-grid-bg {
+      position:absolute; inset:0; opacity:.04;
+      background-image:
+        linear-gradient(rgba(42,26,26,1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42,26,26,1) 1px, transparent 1px);
+      background-size:40px 40px;
+    }
+
         /* ═══════════════════════════ MENU CATEGORY CARDS (Home Page) ═══ */
     #menu-categories-section {
       padding: clamp(80px, 10vh, 120px) clamp(24px, 6vw, 80px);
@@ -765,10 +1224,10 @@
     <a href="#" class="nav-brand" data-sub="Luxury Dessert Catering">ALHA</a>
     <ul class="nav-links">
       <li><a href="#" class="active" data-target="home">Home</a></li>
-      <li><a href="#" data-target="menu">Menu</a></li>
-      <li><a href="#" data-target="home">Events</a></li>
-      <li><a href="#" data-target="home">About</a></li>
-      <li><a href="#" data-target="home">Contact</a></li>
+      <li><a href="menu.html" data-target="menu">Menu</a></li>
+      <li><a href="#" data-target="events">Events</a></li>
+      <li><a href="#" data-target="about">About</a></li>
+      <li><a href="#" data-target="contact">Contact</a></li>
     </ul>
     <div class="nav-right">
       <a href="#" class="nav-reserve">Reserve a Table</a>
@@ -918,6 +1377,393 @@
   </main>
   </div><!-- /#view-home -->
 
+  <!-- ──────────── VIEW: EVENTS (Blog) ──────────── -->
+  <div id="view-events" class="spa-view">
+    <div class="page-hero">
+      <div class="page-hero-bg-dots"></div>
+      <div class="page-hero-content">
+        <p class="page-hero-eyebrow">Stories & Celebrations</p>
+        <h1 class="page-hero-title">Our <em>Events</em> Journal</h1>
+        <p class="page-hero-sub">Behind every dessert, a story worth telling</p>
+        <div class="page-hero-rule">
+          <div class="page-hero-rule-line"></div><div class="page-hero-rule-gem"></div><div class="page-hero-rule-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="events-content">
+      <div class="blog-filters">
+        <button class="blog-filter-btn active" data-filter="all">All Posts</button>
+        <button class="blog-filter-btn" data-filter="weddings">Weddings</button>
+        <button class="blog-filter-btn" data-filter="corporate">Corporate</button>
+        <button class="blog-filter-btn" data-filter="seasonal">Seasonal</button>
+        <button class="blog-filter-btn" data-filter="recipes">Behind the Scenes</button>
+      </div>
+      <!-- Featured post -->
+      <article class="blog-featured reveal-blog">
+        <div class="blog-featured-img-wrap">
+          <img class="blog-featured-img" src="events1.jpeg" alt="Grand Wedding Reception">
+          <span class="blog-featured-tag">Featured</span>
+        </div>
+        <div class="blog-featured-body">
+          <div class="blog-card-meta">
+            <span class="blog-card-date">June 2026</span>
+            <span class="blog-card-meta-dot"></span>
+            <span class="blog-card-read">8 min read</span>
+          </div>
+          <h2 class="blog-featured-title">A Grand Wedding Reception at the Ritz — How We Fed 800 Guests in Elegant Style</h2>
+          <p class="blog-featured-excerpt">When the Al-Rashidi family commissioned ALHA for their daughter's wedding, we knew this would be a defining moment. Six tiers of saffron-infused choux, 1200 gold-dusted macarons, and a dessert table that stretched twelve metres…</p>
+          <a href="#" class="blog-card-link">Read the full story <span class="blog-card-link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- Blog grid -->
+      <div class="blog-grid">
+        <article class="blog-card" data-category="weddings">
+          <div class="blog-card-img-wrap">
+            <img class="blog-card-img" src="events2.jpeg" alt="Intimate Garden Celebration">
+            <div class="blog-card-img-overlay"></div>
+            <span class="blog-card-cat">Weddings</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">May 2026</span>
+              <span class="blog-card-meta-dot"></span>
+              <span class="blog-card-read">5 min read</span>
+            </div>
+            <h3 class="blog-card-title">An Intimate Garden Wedding: Pastel Mille-Feuille &amp; Lavender Eclairs</h3>
+            <p class="blog-card-excerpt">Forty guests, a canopy of fairy lights, and a dessert table that looked like a Monet painting come to life. Here's how we brought softness and warmth to this intimate Jumeirah celebration.</p>
+            <a href="#" class="blog-card-link">Read more <span class="blog-card-link-arrow">→</span></a>
+          </div>
+        </article>
+        <article class="blog-card" data-category="corporate">
+          <div class="blog-card-img-wrap">
+            <img class="blog-card-img" src="events3.jpeg" alt="Corporate Gala">
+            <div class="blog-card-img-overlay"></div>
+            <span class="blog-card-cat">Corporate</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">April 2026</span>
+              <span class="blog-card-meta-dot"></span>
+              <span class="blog-card-read">4 min read</span>
+            </div>
+            <h3 class="blog-card-title">Corporate Gala Night: Branding Your Dessert Table for Maximum Impact</h3>
+            <p class="blog-card-excerpt">For a luxury automotive launch in Downtown Dubai, we created edible logos, monochrome chocolate sculptures, and branded packaging that doubled as keepsakes.</p>
+            <a href="#" class="blog-card-link">Read more <span class="blog-card-link-arrow">→</span></a>
+          </div>
+        </article>
+        <article class="blog-card" data-category="seasonal">
+          <div class="blog-card-img-wrap">
+            <img class="blog-card-img" src="events1.jpeg" alt="Ramadan Special">
+            <div class="blog-card-img-overlay"></div>
+            <span class="blog-card-cat">Seasonal</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">March 2026</span>
+              <span class="blog-card-meta-dot"></span>
+              <span class="blog-card-read">6 min read</span>
+            </div>
+            <h3 class="blog-card-title">Ramadan Iftar Hampers: Dates, Kunafa &amp; the Art of Giving</h3>
+            <p class="blog-card-excerpt">Our most beloved seasonal offering. Each hamper is a journey through tradition — Medjool dates enrobed in 72% dark chocolate, rose-water kunafa bites, and hand-written notes.</p>
+            <a href="#" class="blog-card-link">Read more <span class="blog-card-link-arrow">→</span></a>
+          </div>
+        </article>
+        <article class="blog-card" data-category="recipes">
+          <div class="blog-card-img-wrap">
+            <img class="blog-card-img" src="events2.jpeg" alt="Kitchen Stories">
+            <div class="blog-card-img-overlay"></div>
+            <span class="blog-card-cat">Behind the Scenes</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">February 2026</span>
+              <span class="blog-card-meta-dot"></span>
+              <span class="blog-card-read">7 min read</span>
+            </div>
+            <h3 class="blog-card-title">5 AM in the Kitchen: A Day in the Life of Our Pastry Team</h3>
+            <p class="blog-card-excerpt">Before the city wakes, our kitchen is already alive. Follow our head pastry chef through the rituals, the precision, and the quiet magic of early mornings that make ALHA what it is.</p>
+            <a href="#" class="blog-card-link">Read more <span class="blog-card-link-arrow">→</span></a>
+          </div>
+        </article>
+        <article class="blog-card" data-category="weddings">
+          <div class="blog-card-img-wrap">
+            <img class="blog-card-img" src="events3.jpeg" alt="Engagement Party">
+            <div class="blog-card-img-overlay"></div>
+            <span class="blog-card-cat">Weddings</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">January 2026</span>
+              <span class="blog-card-meta-dot"></span>
+              <span class="blog-card-read">4 min read</span>
+            </div>
+            <h3 class="blog-card-title">A Golden Engagement Party: Champagne Truffles &amp; Custom Cake Towers</h3>
+            <p class="blog-card-excerpt">The brief was "opulent, intimate, unforgettable." We built a four-tier croquembouche dusted with edible gold, surrounded by towers of champagne ganache truffles.</p>
+            <a href="#" class="blog-card-link">Read more <span class="blog-card-link-arrow">→</span></a>
+          </div>
+        </article>
+        <article class="blog-card" data-category="seasonal">
+          <div class="blog-card-img-wrap">
+            <img class="blog-card-img" src="events1.jpeg" alt="Eid Celebrations">
+            <div class="blog-card-img-overlay"></div>
+            <span class="blog-card-cat">Seasonal</span>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">December 2025</span>
+              <span class="blog-card-meta-dot"></span>
+              <span class="blog-card-read">5 min read</span>
+            </div>
+            <h3 class="blog-card-title">Eid Al-Adha: Crafting 3,000 Maamoul for a Single Family Celebration</h3>
+            <p class="blog-card-excerpt">Tradition meets luxury. Our team spent four days hand-moulding rosewater maamoul filled with premium pistachio paste — a feat of craft and community that we'll never forget.</p>
+            <a href="#" class="blog-card-link">Read more <span class="blog-card-link-arrow">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- /#view-events -->
+
+  <!-- ──────────── VIEW: ABOUT ──────────── -->
+  <div id="view-about" class="spa-view">
+    <div class="page-hero">
+      <div class="page-hero-bg-dots"></div>
+      <div class="page-hero-content">
+        <p class="page-hero-eyebrow">Est. 2022 · Kerala, India</p>
+        <h1 class="page-hero-title">The <em>ALHA</em> Story</h1>
+        <p class="page-hero-sub">Crafted with love, presented with elegance</p>
+        <div class="page-hero-rule">
+          <div class="page-hero-rule-line"></div><div class="page-hero-rule-gem"></div><div class="page-hero-rule-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intro split -->
+    <div class="about-intro">
+      <div class="about-intro-text reveal-text">
+        <p class="about-label">Our Beginning</p>
+        <h2>Born from a <em>passion</em> for perfection</h2>
+        <p>ALHA began in a small home kitchen in Kerala, where every dessert was a labour of love made for family and friends. What started as handmade gifts evolved into something far greater — a luxury catering atelier that now graces weddings, corporate galas, and intimate celebrations across the UAE.</p>
+        <p>We believe a dessert isn't just something you eat. It's a memory you carry. Every piece we craft is designed to be tasted, remembered, and talked about long after the last bite.</p>
+        <a href="#" class="section-cta" data-target="contact"><span>Work with us</span><span class="section-cta-arrow">→</span></a>
+      </div>
+      <div class="about-visual reveal-img">
+        <div class="about-visual-frame">
+          <img class="about-visual-img" src="events1.jpeg" alt="ALHA Kitchen">
+          <div class="about-visual-overlay"></div>
+          <div class="about-visual-tag">
+            <strong>500+</strong>
+            <span>Events Crafted</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div class="about-values">
+      <div class="about-values-header reveal-text">
+        <p class="about-label">What We Stand For</p>
+        <h2>Our <em>Core</em> Values</h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-card reveal-text">
+          <span class="value-icon">✦</span>
+          <h3>Uncompromising Quality</h3>
+          <p>We source only premium-grade ingredients — single-origin chocolates, fresh Kerala spices, real saffron. No shortcuts, ever.</p>
+        </div>
+        <div class="value-card reveal-text">
+          <span class="value-icon">◇</span>
+          <h3>Artisan Craft</h3>
+          <p>Every piece is hand-made, hand-finished. Our pastry team brings years of classical training to each creation, blending French technique with South Asian heritage.</p>
+        </div>
+        <div class="value-card reveal-text">
+          <span class="value-icon">❋</span>
+          <h3>Bespoke Experience</h3>
+          <p>No two events are alike. We work closely with each client to design a dessert spread that reflects their personality, culture, and vision perfectly.</p>
+        </div>
+        <div class="value-card reveal-text">
+          <span class="value-icon">⬡</span>
+          <h3>Elegant Presentation</h3>
+          <p>The visual is as important as the taste. Our tablescapes, packaging, and plating are designed by aesthetes who treat every event as an editorial spread.</p>
+        </div>
+        <div class="value-card reveal-text">
+          <span class="value-icon">✿</span>
+          <h3>Cultural Fusion</h3>
+          <p>We blend the richness of Keralan sweetcraft with French pâtisserie and Levantine confectionery — creating flavours that feel both familiar and extraordinary.</p>
+        </div>
+        <div class="value-card reveal-text">
+          <span class="value-icon">◈</span>
+          <h3>Warm Hospitality</h3>
+          <p>From first consultation to final bite, we treat every client like family. Our service is as memorable as our desserts.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div class="about-founders">
+      <div class="about-founders-header reveal-text">
+        <p class="about-label" style="color:rgba(201,151,58,.55);justify-content:center;">The Makers</p>
+        <h2>The people behind<br><em>every bite</em></h2>
+        <p>A small, passionate team of pastry artists, stylists, and hospitality professionals united by one thing: an obsession with making something extraordinary.</p>
+      </div>
+      <div class="founders-grid">
+        <div class="founder-card reveal-text">
+          <div class="founder-avatar">A</div>
+          <h3 class="founder-name">Alha Rashida</h3>
+          <p class="founder-role">Founder & Head Pastry Chef</p>
+          <p class="founder-bio">Trained in Paris, rooted in Kerala. Alha brings classical French technique to every recipe she writes, infusing it with the warmth of home.</p>
+        </div>
+        <div class="founder-card reveal-text">
+          <div class="founder-avatar">K</div>
+          <h3 class="founder-name">Khalid Farhan</h3>
+          <p class="founder-role">Creative Director</p>
+          <p class="founder-bio">Khalid transforms dessert tables into editorial installations. His eye for composition and colour is the reason every ALHA setup looks like art.</p>
+        </div>
+        <div class="founder-card reveal-text">
+          <div class="founder-avatar">S</div>
+          <h3 class="founder-name">Sana Mir</h3>
+          <p class="founder-role">Client Experience Lead</p>
+          <p class="founder-bio">Sana ensures every consultation, order, and delivery is effortless. She's the reason our clients come back again and again.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Journey timeline -->
+    <div class="about-journey">
+      <div class="about-journey-header reveal-text">
+        <p class="about-label">How We Grew</p>
+        <h2>Our <em>Journey</em></h2>
+      </div>
+      <div class="journey-list">
+        <div class="journey-item">
+          <div class="journey-year-col"><div class="journey-dot"></div><span class="journey-year">2022</span></div>
+          <div class="journey-body"><h3>The First Kitchen</h3><p>ALHA starts in a home kitchen in Kollam, Kerala — making custom cakes and dessert boxes for family celebrations and word-of-mouth orders.</p></div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-year-col"><div class="journey-dot"></div><span class="journey-year">2023</span></div>
+          <div class="journey-body"><h3>First Wedding Commission</h3><p>A 400-guest wedding in Kochi becomes our defining moment. The dessert table earns a feature in a regional lifestyle magazine.</p></div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-year-col"><div class="journey-dot"></div><span class="journey-year">2024</span></div>
+          <div class="journey-body"><h3>Expanding to the UAE</h3><p>We open our Dubai atelier and begin catering to luxury hotels, corporate clients, and the emirate's most celebrated weddings.</p></div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-year-col"><div class="journey-dot"></div><span class="journey-year">2026</span></div>
+          <div class="journey-body"><h3>500 Events & Growing</h3><p>With over 500 events crafted and a team of dedicated pastry artists, ALHA continues to redefine what luxury dessert catering means in the region.</p></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /#view-about -->
+
+  <!-- ──────────── VIEW: CONTACT ──────────── -->
+  <div id="view-contact" class="spa-view">
+    <div class="page-hero">
+      <div class="page-hero-bg-dots"></div>
+      <div class="page-hero-content">
+        <p class="page-hero-eyebrow">We'd Love to Hear from You</p>
+        <h1 class="page-hero-title">Get in <em>Touch</em></h1>
+        <p class="page-hero-sub">Let's create something unforgettable together</p>
+        <div class="page-hero-rule">
+          <div class="page-hero-rule-line"></div><div class="page-hero-rule-gem"></div><div class="page-hero-rule-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-content">
+      <div class="contact-layout">
+        <div class="contact-info">
+          <p class="contact-info-label">Find Us</p>
+          <h2>Let's plan your<br><em>perfect event</em></h2>
+          <p>Whether you're planning a grand wedding, an intimate gathering, or a corporate celebration, ALHA's team is here to create a dessert experience you'll never forget. Reach out and let's begin.</p>
+          <div class="contact-details">
+            <div class="contact-detail-item reveal-text">
+              <span class="contact-detail-icon">📍</span>
+              <div class="contact-detail-body">
+                <strong>Location</strong>
+                <span>Dubai, United Arab Emirates<br>& Kollam, Kerala, India</span>
+              </div>
+            </div>
+            <div class="contact-detail-item reveal-text">
+              <span class="contact-detail-icon">✉️</span>
+              <div class="contact-detail-body">
+                <strong>Email</strong>
+                <span>hello@alha.in</span>
+              </div>
+            </div>
+            <div class="contact-detail-item reveal-text">
+              <span class="contact-detail-icon">📞</span>
+              <div class="contact-detail-body">
+                <strong>Phone</strong>
+                <span>+971 56 156 1727</span>
+              </div>
+            </div>
+            <div class="contact-detail-item reveal-text">
+              <span class="contact-detail-icon">🕐</span>
+              <div class="contact-detail-body">
+                <strong>Hours</strong>
+                <span>Sunday – Thursday: 9am – 6pm<br>Friday: 10am – 2pm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form-wrap reveal-text">
+          <h3 class="contact-form-title">Send us a message</h3>
+          <p class="contact-form-sub">We'll get back to you within 24 hours</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-input" placeholder="Fatima">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-input" placeholder="Al-Rashidi">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="hello@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-input" placeholder="+971 50 000 0000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Type of Event</label>
+            <select class="form-select form-input">
+              <option value="" disabled selected>Select event type</option>
+              <option>Wedding</option>
+              <option>Engagement</option>
+              <option>Corporate Event</option>
+              <option>Birthday / Celebration</option>
+              <option>Ramadan / Eid</option>
+              <option>Personal Order</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tell Us About Your Event</label>
+            <textarea class="form-textarea" placeholder="Date, guest count, vision, dietary requirements…"></textarea>
+          </div>
+          <button class="form-submit" onclick="document.getElementById('contact-success').style.display='block';this.style.display='none';">
+            Send Message <span class="form-submit-icon">→</span>
+          </button>
+          <div class="form-success" id="contact-success">
+            <p>✦ Thank you — we'll be in touch within 24 hours ✦</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-map-section">
+      <p class="contact-map-label">Find Us</p>
+      <div class="contact-map-frame">
+        <div class="contact-map-grid-bg"></div>
+        <div class="contact-map-inner">
+          <span class="contact-map-pin">📍</span>
+          <p class="contact-map-text">Dubai, United Arab Emirates</p>
+          <p class="contact-map-sub">Downtown Dubai · Jumeirah · DIFC</p>
+        </div>
+      </div>
+    </div>
+  </div><!-- /#view-contact -->
+
   
  
   <footer role="contentinfo">
@@ -925,7 +1771,7 @@
       <div class="footer-brand-col">
         <span class="footer-brand-name">ALHA</span>
         <span class="footer-brand-sub">Luxury Dessert Catering</span>
-        <p class="footer-about">Crafting extraordinary dessert experiences across Kerala since 2020. Every creation is a labour of love.</p>
+        <p class="footer-about">Crafting extraordinary dessert experiences across the United Arab Emirates since 2026. Every creation is a labour of love.</p>
       </div>
       <div class="footer-centre-col">
         <div class="footer-orn"><div class="footer-orn-line"></div><div class="footer-orn-gem"></div><div class="footer-orn-line"></div></div>
@@ -936,11 +1782,11 @@
         <nav class="footer-links" aria-label="Footer navigation">
           <a href="#">Home</a><a href="#">Menu</a><a href="#">Events</a><a href="#">About Us</a><a href="#">Contact</a>
         </nav>
-        <p class="footer-contact">Kerala, India<br>hello@alha.in<br>+91 98765 43210</p>
+        <p class="footer-contact">Dubai, United Arab Emirates<br>hello@alha.in<br>+971 56 156 1727</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© 2024 ALHA. All rights reserved.</p>
+      <p class="footer-copy">© 2026 ALHA. All rights reserved.</p>
       <p class="footer-craft">Handcrafted with Care ✦</p>
     </div>
   </footer>
