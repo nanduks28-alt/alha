@@ -1967,152 +1967,189 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       ARC DOCK NAVIGATION (RIGHT SIDE)
+       ANTIGRAVITY WEAPON WHEEL NAVIGATION (RIGHT SIDE)
     ═══════════════════════════════════════════════════════ */
-    /* Arc Dock - RIGHT side, semicircle flush to edge */
     #arc-dock {
       position: fixed;
       right: 0;
       top: 50%;
       transform: translateY(-50%);
-      width: 170px;
-      height: 360px;
+      width: 240px;
+      height: 480px;
       z-index: 9999;
       pointer-events: none;
-      overflow: visible;
+      /* Hidden until the main site reveals — toggled by JS */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .6s ease, visibility .6s ease;
     }
+    #arc-dock.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Semi-circle wheel — with punched-out inner hollow via mask */
+    .arc-wheel {
+      position: absolute; right: 0; top: 0;
+      width: 240px; height: 480px;
+      background: radial-gradient(circle at 100% 50%, #2b1610 20%, #120905 80%);
+      border-radius: 240px 0 0 240px;
+      border-left: 2px solid rgba(201,151,58,0.7);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.6), inset 10px 0 50px rgba(0,0,0,0.9);
+      pointer-events: all;
+      /* Punch out the inner hollow with a mask — transparent hole on the right */
+      -webkit-mask:
+        radial-gradient(circle at 100% 50%,
+          transparent 0px,
+          transparent 98px,
+          black 100px
+        );
+      mask:
+        radial-gradient(circle at 100% 50%,
+          transparent 0px,
+          transparent 98px,
+          black 100px
+        );
+    }
+
+    /* Lines separating segments */
+    .arc-divider {
+      position: absolute; right: 0; top: 50%; transform-origin: 100% 50%;
+      width: 240px; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(201,151,58,0.8));
+      box-shadow: 0 0 8px rgba(201,151,58,0.6);
+      pointer-events: none;
+    }
+    .arc-divider-1 { transform: translateY(-50%) rotate(-45deg); }
+    .arc-divider-2 { transform: translateY(-50%) rotate(0deg); }
+    .arc-divider-3 { transform: translateY(-50%) rotate(45deg); }
 
     /* Arc items */
     .arc-item {
       position: absolute;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
       pointer-events: all;
       text-decoration: none;
-      color: rgba(250,246,238,0.5);
-      flex-direction: row; /* label LEFT, icon RIGHT */
-      transition: color .25s;
+      color: var(--gold);
+      flex-direction: row;
+      /* Constrain width so text never bleeds past the wheel edge */
+      max-width: 148px;
+      overflow: hidden;
+      transition: transform .3s, filter .3s;
     }
     .arc-item i {
-      font-size: 18px;
-      color: rgba(201,151,58,0.65);
-      transition: color .3s, transform .3s;
+      font-size: 20px;
       flex-shrink: 0;
+      filter: drop-shadow(0 0 4px rgba(201,151,58,0.5));
+      transition: transform .3s, color .3s;
     }
     .arc-item span {
-      font-size: 10px;
-      letter-spacing: 2px;
+      font-size: 11px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       font-family: 'Jost', sans-serif;
-      color: rgba(250,246,238,0.8);
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateX(10px);
-      transition: opacity .3s, transform .3s;
-      pointer-events: none;
-    }
-    .arc-item:hover span,
-    .arc-item.active span {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    .arc-item:hover i,
-    .arc-item.active i {
       color: var(--gold);
-      transform: scale(1.3);
+      white-space: nowrap;
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(201,151,58,0.4);
+      transition: letter-spacing .3s, color .3s, text-shadow .3s;
+      /* Clip text that would bleed outside the wheel */
+      overflow: hidden;
+      text-overflow: clip;
+    }
+    .arc-item:hover {
+      filter: brightness(1.3);
+    }
+    .arc-item:hover i {
+      transform: scale(1.2);
     }
 
-    /* Action buttons */
+    /* Active section highlight */
+    .arc-item.active span {
+      color: #fff;
+      text-shadow:
+        0 0 8px rgba(201,151,58,1),
+        0 0 20px rgba(201,151,58,0.7),
+        0 0 40px rgba(201,151,58,0.4);
+      letter-spacing: 4px;
+    }
+    .arc-item.active i {
+      color: #ffe9a0;
+      filter:
+        drop-shadow(0 0 6px rgba(201,151,58,1))
+        drop-shadow(0 0 14px rgba(201,151,58,0.8));
+      transform: scale(1.25);
+    }
+    /* Active divider glow — the segment separator for the active item pulses */
+    .arc-item.active::after {
+      content: '';
+      position: absolute;
+      inset: -12px -8px;
+      background: radial-gradient(ellipse at center, rgba(201,151,58,0.18) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: activeGlow 2s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+    @keyframes activeGlow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.15); }
+    }
+
+    /* Action buttons in hollow center */
     #arc-cart, #arc-wa {
       position: absolute;
-      width: 44px;
-      height: 44px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       pointer-events: all;
       text-decoration: none;
-      border: 1px solid rgba(201,151,58,0.4);
-      transition: transform .3s, border-color .3s;
-    }
-    #arc-cart {
-      background: var(--primary);
+      transition: transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow .4s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
     #arc-wa {
-      background: var(--cream);
+      background: #faf6ee;
     }
-    #arc-cart:hover, #arc-wa:hover {
-      transform: scale(1.1);
-      border-color: var(--gold);
+    #arc-cart {
+      background: #6b1126;
+      border: 1px solid rgba(201,151,58,0.3);
     }
+    #arc-wa:hover, #arc-cart:hover {
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+    #arc-wa:hover { transform: translate(-50%, -50%) scale(1.15) translateY(-5px) !important; }
+    #arc-cart:hover { transform: translate(-50%, -50%) scale(1.15) translateY(-5px) !important; }
+    
     #arc-cart-badge {
-      position: absolute;
-      top: -3px;
-      right: -3px;
-      min-width: 16px;
-      height: 16px;
-      border-radius: 8px;
-      background: var(--gold);
-      color: var(--bg-dark);
-      font-size: 9px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: -4px; right: -4px;
+      min-width: 20px; height: 20px; border-radius: 10px;
+      background: var(--gold); color: var(--bg-dark);
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    /* Mobile bottom nav */
-    #mobile-bottom-nav {
-      display: none;
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 64px;
-      background: rgba(26,15,15,.96);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(201,151,58,.2);
-      z-index: 10000;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 8px;
+    /* Floating Stardust */
+    .stardust {
+      position: absolute;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      box-shadow: 0 0 6px var(--gold);
+      animation: floatDust 4s infinite alternate ease-in-out;
     }
-    .mob-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      cursor: pointer;
-      padding: 6px 10px;
-      border-radius: 10px;
-      transition: background .25s;
-      text-decoration: none;
-      color: rgba(250,246,238,.55);
-      background: none;
-      border: none;
-      position: relative;
-    }
-    .mob-nav-item:hover,
-    .mob-nav-item.active { 
-      color: var(--gold); 
-      background: rgba(201,151,58,.08); 
-    }
-    .mob-nav-icon { font-size: 18px; line-height: 1; }
-    .mob-nav-label {
-      font-family: 'Jost', sans-serif;
-      font-size: 9px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    #mob-cart .dock-badge {
-      top: 4px;
-      right: 4px;
+    @keyframes floatDust {
+      0% { transform: translateY(0) scale(1); opacity: 0.4; }
+      100% { transform: translateY(-20px) scale(1.5); opacity: 1; }
     }
 
     @media (max-width: 768px) {
-      #arc-dock { display: none; }
-      #mobile-bottom-nav { display: flex; }
-      body { padding-bottom: 64px; }
+      body { padding-bottom: 0; }
     }
   </style>
 </head>
@@ -2958,7 +2995,7 @@
   (function loop(){
     c.style.left=mx+'px'; c.style.top=my+'px';
     rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
-    r.style.left=rx+'px'; r.style.top=ry+'px';
+    r.style.left=rx+'px'; r.style.top=my+'px';
     requestAnimationFrame(loop);
   })();
 })();
@@ -3423,45 +3460,41 @@ setTimeout(()=>{
 
   updateCartBadge(); // Init
 })();
+
 /* ════════════════════════════════════════════════════════
-   ARC DOCK NAVIGATION (RIGHT SIDE)
+   ANTIGRAVITY WEAPON WHEEL NAVIGATION (RIGHT SIDE)
 ════════════════════════════════════════════════════════ */
 (function() {
-  // Create and inject arc dock HTML
   const arcDockHTML = `
     <nav id="arc-dock" role="navigation" aria-label="Page sections">
-      <svg id="arc-svg" xmlns="http://www.w3.org/2000/svg"
-           width="170" height="360" viewBox="0 0 170 360"
-           style="position:absolute;top:0;left:0;pointer-events:none;">
-        <!-- Ghost track -->
-        <path d="M 170 20 A 160 160 0 0 0 170 340"
-              fill="rgba(26,15,15,0.82)" stroke="none"/>
-        <path d="M 170 20 A 160 160 0 0 0 170 340"
-              fill="none" stroke="rgba(201,151,58,0.18)" stroke-width="1.5"/>
-        <!-- Animated gold arc -->
-        <path id="arc-line" d="M 170 20 A 160 160 0 0 0 170 340"
-              fill="none" stroke="rgba(201,151,58,0.7)" stroke-width="1.5"/>
-        <!-- Progress arc -->
-        <path id="arc-prog" d="M 170 20 A 160 160 0 0 0 170 340"
-              fill="none" stroke="#c9973a" stroke-width="2.5" opacity="0.5"/>
-      </svg>
+      <div class="arc-wheel">
+        <div class="arc-divider arc-divider-1"></div>
+        <div class="arc-divider arc-divider-2"></div>
+        <div class="arc-divider arc-divider-3"></div>
+      </div>
+      
+      <!-- Stardust -->
+      <div class="stardust" style="width:5px;height:5px;top:40px;left:40px;animation-delay:0s;"></div>
+      <div class="stardust" style="width:3px;height:3px;top:140px;left:20px;animation-delay:1.5s;"></div>
+      <div class="stardust" style="width:6px;height:6px;bottom:100px;left:60px;animation-delay:2.2s;"></div>
+      <div class="stardust" style="width:4px;height:4px;bottom:40px;left:90px;animation-delay:0.8s;"></div>
 
-      <!-- Nav items: positioned by JS along the arc - REVERSED ORDER (Contact at top, Home at bottom) -->
-      <a class="arc-item" data-id="contact" href="#contact">
-        <i class="ti ti-mail"></i>
-        <span>Contact</span>
-      </a>
-      <a class="arc-item" data-id="blog" href="#blog">
-        <i class="ti ti-notebook"></i>
-        <span>Blog</span>
+      <!-- Nav items: Home at bottom → Contact at top -->
+      <a class="arc-item" data-id="home" href="#hero-band">
+        <span>HOME</span>
+        <i class="ti ti-home"></i>
       </a>
       <a class="arc-item" data-id="menu" href="menu.html">
+        <span>MENU</span>
         <i class="ti ti-chef-hat"></i>
-        <span>Menu</span>
       </a>
-      <a class="arc-item" data-id="home" href="#home">
-        <i class="ti ti-home"></i>
-        <span>Home</span>
+      <a class="arc-item" data-id="blog" href="#blog">
+        <span>BLOG</span>
+        <i class="ti ti-notebook"></i>
+      </a>
+      <a class="arc-item" data-id="contact" href="#contact">
+        <span>CONTACT</span>
+        <i class="ti ti-mail"></i>
       </a>
 
       <!-- Action buttons -->
@@ -3485,92 +3518,119 @@ setTimeout(()=>{
   const dock = document.getElementById('arc-dock');
   if (!dock) return;
 
-  // Arc geometry: right edge flush, semicircle curves LEFT into the page
-  // SVG viewBox is "0 0 170 360", arc center is at x=170 (right edge), y=180 (middle)
-  // Radius 160 — points on arc range from x≈10 to x≈170
-  const CX = 170, CY = 180, R = 160;
+  // Arc geometry — semi-circle, CX/CY is the flat (right) edge centre
+  const CX = 240, CY = 240, R = 170;
 
-  // t=0 → top, t=1 → bottom; angles 120°→240° keep arc on LEFT half of circle
-  function arcPt(t) {
-    const angle = (2 * Math.PI / 3) + t * (2 * Math.PI / 3); // 120deg to 240deg
-    return {
-      x: CX + R * Math.cos(angle),
-      y: CY + R * Math.sin(angle)
-    };
-  }
-
-  // Position the 4 nav items evenly: t = 0.15, 0.38, 0.62, 0.85
-  // REVERSED ORDER: Contact (top), Blog, Menu, Home (bottom)
-  const tNav = [0.15, 0.38, 0.62, 0.85];
+  // Angles for 4 items evenly distributed across the arc (bottom → top)
+  // 247.5° = bottom, 202.5°, 157.5°, 112.5° = top
+  const angles = [247.5, 202.5, 157.5, 112.5]; // Home, Menu, Blog, Contact
   const items = dock.querySelectorAll('.arc-item');
   items.forEach((el, i) => {
-    const pt = arcPt(tNav[i]);
-    el.style.left = (pt.x - 10) + 'px';
-    el.style.top  = (pt.y - 10) + 'px';
+    const rad = angles[i] * Math.PI / 180;
+    el.style.left = (CX + R * Math.cos(rad)) + 'px';
+    el.style.top  = (CY + R * Math.sin(rad)) + 'px';
+    el.style.transform = 'translate(-100%, -50%)';
   });
 
-  // Cart button at t=0.28 (between Home and Menu), WhatsApp at t=0.72 (between Blog and Contact)
-  // Buttons are 44x44 — offset by 22px to center them on the arc point, plus 28px to pull inward
   const cartEl = document.getElementById('arc-cart');
   const waEl   = document.getElementById('arc-wa');
-  if (cartEl) {
-    const pt = arcPt(0.28);
-    cartEl.style.left = (pt.x - 22 - 28) + 'px';
-    cartEl.style.top  = (pt.y - 22) + 'px';
-  }
   if (waEl) {
-    const pt = arcPt(0.72);
-    waEl.style.left = (pt.x - 22 - 28) + 'px';
-    waEl.style.top  = (pt.y - 22) + 'px';
+    const rad = 225 * Math.PI / 180;
+    waEl.style.left = (CX + 75 * Math.cos(rad)) + 'px';
+    waEl.style.top  = (CY + 75 * Math.sin(rad)) + 'px';
+    waEl.style.transform = 'translate(-50%, -50%)';
+  }
+  if (cartEl) {
+    const rad = 135 * Math.PI / 180;
+    cartEl.style.left = (CX + 75 * Math.cos(rad)) + 'px';
+    cartEl.style.top  = (CY + 75 * Math.sin(rad)) + 'px';
+    cartEl.style.transform = 'translate(-50%, -50%)';
   }
 
-  // Animate arc stroke draw-on
-  const arcLine = document.getElementById('arc-line');
-  const arcProg = document.getElementById('arc-prog');
-  if (arcLine) {
-    const len = arcLine.getTotalLength();
-    arcLine.style.strokeDasharray  = len;
-    arcLine.style.strokeDashoffset = len;
-    arcProg.style.strokeDasharray  = len;
-    arcProg.style.strokeDashoffset = len;
-    setTimeout(() => {
-      arcLine.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)';
-      arcLine.style.strokeDashoffset = '0';
-    }, 800);
-  }
+  // ── Active section detection via IntersectionObserver ──
+  // Map data-id → section element. Home maps to the hero band.
+  const sectionMap = {
+    home:    document.getElementById('hero-band'),
+    menu:    document.getElementById('menu'),
+    blog:    document.getElementById('blog'),
+    contact: document.getElementById('contact'),
+  };
 
-  // Scroll progress fills arc-prog from top
-  function updateProgress() {
-    if (!arcProg || !arcLine) return;
-    const pct = Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1);
-    arcProg.style.strokeDashoffset = arcLine.getTotalLength() * (1 - pct);
-  }
-
-  // Active section detection
-  const sectionIds = ['home', 'menu', 'blog', 'contact'];
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        items.forEach(n => n.classList.toggle('active', n.dataset.id === e.target.id));
+  function setActive(id) {
+    items.forEach(n => {
+      const wasActive = n.classList.contains('active');
+      const isActive  = n.dataset.id === id;
+      if (isActive && !wasActive) {
+        n.classList.add('active');
+      } else if (!isActive && wasActive) {
+        n.classList.remove('active');
       }
     });
-  }, { 
-    threshold: 0.15,
-    rootMargin: '-10% 0px -80% 0px'
-  });
-  sectionIds.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+  }
+
+  // Use a scroll-based approach: check which section occupies most of the viewport
+  function detectActive() {
+    // At the very top of the page, always highlight Home
+    if (window.scrollY < 80) {
+      setActive('home');
+      return;
+    }
+
+    const vh = window.innerHeight;
+    let bestId = 'home';
+    let bestCoverage = -Infinity;
+
+    Object.entries(sectionMap).forEach(([id, el]) => {
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      // How many px of this section is visible in the viewport
+      const visTop    = Math.max(r.top, 0);
+      const visBottom = Math.min(r.bottom, vh);
+      const coverage  = visBottom - visTop;
+      if (coverage > bestCoverage) {
+        bestCoverage = coverage;
+        bestId = id;
+      }
+    });
+
+    setActive(bestId);
+  }
+
+  detectActive();
+  window.addEventListener('scroll', detectActive, { passive: true });
+
+  // Show the dock only once the main site has revealed (after loading screen)
+  function showDock() {
+    const dock = document.getElementById('arc-dock');
+    if (dock) dock.classList.add('visible');
+  }
+  // If main-site is already visible (e.g. hot reload), show immediately
+  if (document.getElementById('main-site').classList.contains('visible')) {
+    showDock();
+  } else {
+    const dockObs = new MutationObserver(muts => {
+      muts.forEach(m => {
+        if (m.target.classList.contains('visible')) {
+          dockObs.disconnect();
+          showDock();
+        }
+      });
+    });
+    dockObs.observe(document.getElementById('main-site'), { attributes: true, attributeFilter: ['class'] });
+  }
 
   // Click: smooth scroll for same-page sections, navigate for menu.html
   items.forEach(item => {
     item.addEventListener('click', e => {
-      if (item.getAttribute('href') && item.getAttribute('href').includes('.html')) return; // let it navigate
+      const href = item.getAttribute('href');
+      if (href && href.includes('.html')) return; // let browser navigate
       e.preventDefault();
-      const target = document.getElementById(item.dataset.id);
+      const target = sectionMap[item.dataset.id];
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 
-  // Cart badge sync - read directly from localStorage
+  // Cart badge sync from localStorage
   function syncBadge() {
     const arc = document.getElementById('arc-cart-badge');
     if (!arc) return;
@@ -3580,12 +3640,10 @@ setTimeout(()=>{
     arc.style.display = count > 0 ? 'flex' : 'none';
   }
 
-  // Cart click → go to menu.html
   if (cartEl) cartEl.addEventListener('click', e => { e.preventDefault(); window.location.href = 'menu.html'; });
 
-  window.addEventListener('scroll', updateProgress, { passive: true });
+  syncBadge();
   setInterval(syncBadge, 400);
-  updateProgress();
 })();
 
 /* ════════════════════════════════════════════════════════
