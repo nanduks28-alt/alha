@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&family=Abril+Fatface&display=swap" rel="stylesheet" />
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <!-- Three.js r128 from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
@@ -262,7 +264,7 @@
     .cart-badge { position:absolute; top:-4px; right:-6px; width:16px; height:16px; border-radius:50%; background:var(--gold); color:var(--bg-dark); font-size:9px; font-weight:500; display:flex; align-items:center; justify-content:center; }
  
     /* ═══════════════════════════ HERO ═══ */
-    #hero-band {
+    #home {
       position: relative;
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -281,7 +283,7 @@
     }
  
     /* Vignette + content layer */
-    #hero-band::before {
+    #home::before {
       content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
       background:
         radial-gradient(ellipse 60% 70% at 50% 50%, transparent 40%, rgba(26,5,5,.55) 100%),
@@ -351,10 +353,10 @@
     .stat-label { font-size:9px; font-weight:400; letter-spacing:3px; text-transform:uppercase; color:rgba(42,26,26,.4); margin-top:6px; display:block; }
  
     /* ═══════════════════════════ STORY TIMELINE ═══ */
-    #story-timeline {
+    #menu {
       position:relative; min-height:360vh; padding:80px 0 120px; background:var(--bg);
     }
-    #story-timeline::before {
+    #menu::before {
       content:''; position:absolute; inset:0; pointer-events:none;
       background-image:radial-gradient(rgba(42,26,26,.04) 1px,transparent 0);
       background-size:32px 32px;
@@ -483,6 +485,233 @@
     .reveal-text.in-view > *:nth-child(5){transition-delay:.32s}
     .reveal-quote { opacity:0;transform:translateY(24px);transition:opacity 1.1s ease,transform 1.1s ease; }
     .reveal-quote.in-view { opacity:1;transform:translateY(0); }
+
+    /* ═══════════════════════════ FULL-HEIGHT SECTIONS ═══ */
+    .full-section {
+      min-height: 100vh;
+      position: relative;
+      scroll-snap-align: start;
+    }
+
+    /* ═══════════════════════════ BLOG SECTION ═══ */
+    #blog {
+      padding: clamp(80px,10vh,120px) clamp(32px,6vw,80px);
+      background: var(--bg);
+    }
+    .blog-header {
+      text-align: center;
+      margin-bottom: clamp(48px,8vh,80px);
+    }
+    .blog-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px,6vw,72px);
+      font-weight: 300;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .blog-header p {
+      font-size: clamp(14px,1.5vw,18px);
+      color: var(--text-lt);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .blog-card {
+      background: rgba(250,246,238,.6);
+      border: 1px solid rgba(201,151,58,.15);
+      padding: 36px;
+      transition: transform .3s ease, box-shadow .3s ease;
+      position: relative;
+    }
+    .blog-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(42,26,26,.08);
+    }
+    .blog-card:hover::before {
+      transform: scaleX(1);
+    }
+    .blog-date {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .blog-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(24px,3vw,32px);
+      font-weight: 400;
+      color: var(--primary);
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .blog-excerpt {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-lt);
+      margin-bottom: 24px;
+    }
+    .blog-read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary);
+      text-decoration: none;
+      transition: gap .3s ease, color .3s ease;
+    }
+    .blog-read-more:hover {
+      gap: 12px;
+      color: var(--gold);
+    }
+
+    /* ═══════════════════════════ CONTACT SECTION ═══ */
+    #contact {
+      padding: clamp(80px,10vh,120px) clamp(32px,6vw,80px);
+      background: var(--cream);
+    }
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .contact-form-wrap h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px,5vw,56px);
+      font-weight: 300;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .contact-form-wrap p {
+      font-size: 15px;
+      color: var(--text-lt);
+      margin-bottom: 36px;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .form-group input,
+    .form-group textarea {
+      padding: 14px 18px;
+      border: 1px solid rgba(201,151,58,.25);
+      background: rgba(255,255,255,.7);
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      transition: border-color .3s ease, background .3s ease;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(255,255,255,.95);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+    .submit-btn {
+      padding: 16px 48px;
+      background: var(--primary);
+      color: var(--cream);
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .3s ease, transform .3s ease, box-shadow .3s ease;
+      align-self: flex-start;
+    }
+    .submit-btn:hover {
+      background: var(--gold);
+      color: var(--bg-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,151,58,.3);
+    }
+    .contact-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px,4vw,40px);
+      font-weight: 300;
+      color: var(--primary);
+      margin-bottom: 28px;
+    }
+    .info-item {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(201,151,58,.15);
+    }
+    .info-item:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .info-value {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .info-value a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color .3s ease;
+    }
+    .info-value a:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 900px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+    }
+
+  <!-- BLOG & CONTACT sections moved below, after #menu -->
+
  
     /* ═══════════════════════════ FOOTER ═══ */
     footer { background:var(--bg-dark); position:relative; overflow:hidden; }
@@ -526,7 +755,7 @@
       .footer-top { grid-template-columns:1fr;text-align:center; }
       .footer-links,.footer-right-col { align-items:center; }
       .footer-contact { text-align:center; }
-      #hero-band { min-height:80vh; }
+      #home { min-height:80vh; }
     }
 
         /* ═══════════════════════════ MENU CATEGORY CARDS (Home Page) ═══ */
@@ -619,6 +848,155 @@
     @media (max-width: 900px) {
       .menu-info { grid-template-columns: 1fr; }
       .menu-benefits { grid-template-columns: 1fr; }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       ARC DOCK NAVIGATION (RIGHT SIDE)
+    ═══════════════════════════════════════════════════════ */
+    /* Arc Dock - RIGHT side, semicircle flush to edge */
+    #arc-dock {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 170px;
+      height: 360px;
+      z-index: 9999;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    /* Arc items */
+    .arc-item {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: all;
+      text-decoration: none;
+      color: rgba(250,246,238,0.5);
+      flex-direction: row; /* label LEFT, icon RIGHT */
+      transition: color .25s;
+    }
+    .arc-item i {
+      font-size: 18px;
+      color: rgba(201,151,58,0.65);
+      transition: color .3s, transform .3s;
+      flex-shrink: 0;
+    }
+    .arc-item span {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-family: 'Jost', sans-serif;
+      color: rgba(250,246,238,0.8);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(10px);
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+    }
+    .arc-item:hover span,
+    .arc-item.active span {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .arc-item:hover i,
+    .arc-item.active i {
+      color: var(--gold);
+      transform: scale(1.3);
+    }
+
+    /* Action buttons */
+    #arc-cart, #arc-wa {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      text-decoration: none;
+      border: 1px solid rgba(201,151,58,0.4);
+      transition: transform .3s, border-color .3s;
+    }
+    #arc-cart {
+      background: var(--primary);
+    }
+    #arc-wa {
+      background: var(--cream);
+    }
+    #arc-cart:hover, #arc-wa:hover {
+      transform: scale(1.1);
+      border-color: var(--gold);
+    }
+    #arc-cart-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      background: var(--gold);
+      color: var(--bg-dark);
+      font-size: 9px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Mobile bottom nav */
+    #mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(26,15,15,.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(201,151,58,.2);
+      z-index: 10000;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 8px;
+    }
+    .mob-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 10px;
+      transition: background .25s;
+      text-decoration: none;
+      color: rgba(250,246,238,.55);
+      background: none;
+      border: none;
+      position: relative;
+    }
+    .mob-nav-item:hover,
+    .mob-nav-item.active { 
+      color: var(--gold); 
+      background: rgba(201,151,58,.08); 
+    }
+    .mob-nav-icon { font-size: 18px; line-height: 1; }
+    .mob-nav-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    #mob-cart .dock-badge {
+      top: 4px;
+      right: 4px;
+    }
+
+    @media (max-width: 768px) {
+      #arc-dock { display: none; }
+      #mobile-bottom-nav { display: flex; }
+      body { padding-bottom: 64px; }
     }
   </style>
 </head>
@@ -762,23 +1140,22 @@
 <div id="main-site">
  
   <nav role="navigation" aria-label="Main navigation">
-    <a href="#" class="nav-brand" data-sub="Luxury Dessert Catering">ALHA</a>
+    <a href="#home" class="nav-brand" data-sub="Luxury Dessert Catering">ALHA</a>
     <ul class="nav-links">
-      <li><a href="#" class="active" data-target="home">Home</a></li>
-      <li><a href="#" data-target="menu">Menu</a></li>
-      <li><a href="#" data-target="home">Events</a></li>
-      <li><a href="#" data-target="home">About</a></li>
-      <li><a href="#" data-target="home">Contact</a></li>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="menu.html?category=events">Events</a></li>
+      <li><a href="#blog">About</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
-      <a href="#" class="nav-reserve">Reserve a Table</a>
+      <a href="#contact" class="nav-reserve">Reserve a Table</a>
       <div class="nav-cart" role="button" aria-label="Cart" tabindex="0">🛒<span class="cart-badge" id="cart-badge" style="display:none;">0</span></div>
     </div>
   </nav>
  
-  <div id="view-home" class="spa-view active">
-  <!-- ── HERO (Three.js canvas inside) ── -->
-  <section id="hero-band" aria-label="Welcome">
+  <!-- ══════════════════════════ SECTION: HOME ══════════════════════════ -->
+  <section id="home" aria-label="Welcome">
     <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-content">
       <p class="hero-eyebrow">Handcrafted with Love</p>
@@ -788,8 +1165,8 @@
         <div class="hero-divider-line"></div><div class="hero-divider-gem"></div><div class="hero-divider-line"></div>
       </div>
       <div class="hero-cta-wrap">
-        <a href="#" class="hero-cta-primary">Explore Our Menu</a>
-        <a href="#" class="hero-cta-secondary"><span>▶</span> View Signature Collection</a>
+        <a href="menu.html" class="hero-cta-primary">Explore Our Menu</a>
+        <a href="menu.html" class="hero-cta-secondary"><span>▶</span> View Signature Collection</a>
       </div>
     </div>
     <div class="hero-scroll-hint" aria-hidden="true">
@@ -797,25 +1174,29 @@
     </div>
   </section>
   <section id="menu-categories-section">
+  </section>
+
+  <!-- Menu Categories Section (inside #home) -->
+  <section id="menu-categories-section">
     <div class="menu-info">
       <div class="menu-info-text">
-        <p class="menu-section-eyebrow">Discover your perfect dessert plan</p>
-        <h2>Designed for celebrations large and small</h2>
-        <p>From lavish banquet spreads to intimate dessert hampers, ALHA combines premium ingredients with elegant presentation. Browse the categories to find the ideal option for your event, and enjoy effortless planning with our personalised ordering support.</p>
+        <div class="menu-section-eyebrow">Curated Collections</div>
+        <h2>Two Paths to<br>Sweet Perfection</h2>
+        <p>Whether you're planning a grand celebration or seeking a personal indulgence, we offer two distinct ways to experience our artisan craft.</p>
       </div>
       <div class="menu-benefits">
-        <article class="benefit-card">
-          <h3>Event-ready menus</h3>
-          <p>Flexible bulk offerings tailored for weddings, corporate events and family celebrations.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Handcrafted small orders</h3>
-          <p>Perfectly portioned desserts for gifting, parties, or personal indulgence.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Premium service</h3>
-          <p>Expert guidance, custom packaging, and delivery that keeps every treat picture-perfect.</p>
-        </article>
+        <div class="benefit-card">
+          <h3>Custom Orders</h3>
+          <p>Bulk quantities for weddings, corporate events, and large gatherings.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Ready to Enjoy</h3>
+          <p>Small quantities for intimate occasions and personal enjoyment.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Premium Quality</h3>
+          <p>Every dessert crafted with the finest ingredients and utmost care.</p>
+        </div>
       </div>
     </div>
     <div class="menu-categories">
@@ -830,29 +1211,17 @@
     </div>
   </section>
 
- 
-  <!-- Stats Band -->
+  <!-- Stats Band (inside #home) -->
   <div id="stats-band" aria-label="Our milestones">
     <div class="stat-item"><span class="stat-number" data-target="500" data-suffix="+">0</span><span class="stat-label">Events Catered</span></div>
     <div class="stat-item"><span class="stat-number" data-target="12">0</span><span class="stat-label">Signature Collections</span></div>
     <div class="stat-item"><span class="stat-number" data-target="4">0</span><span class="stat-label">Years of Craft</span></div>
     <div class="stat-item"><span class="stat-number" data-target="98" data-suffix="%">0</span><span class="stat-label">Happy Clients</span></div>
   </div>
+</section><!-- End #home -->
  
-  <main>
-    <section id="story-timeline" aria-label="Our story">
-      <svg id="path-canvas" aria-hidden="true">
-        <defs>
-          <filter id="path-glow">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-        </defs>
-        <path id="zigzag-path-draw" fill="none" stroke="rgba(201,151,58,.55)" stroke-width="1.5" stroke-dasharray="0" stroke-dashoffset="0" filter="url(#path-glow)"/>
-        <path id="zigzag-path-ghost" fill="none" stroke="rgba(201,151,58,.1)" stroke-width="1.5" stroke-dasharray="6 6"/>
-        <g id="path-nodes"></g>
-      </svg>
-      <div id="sphere" role="presentation" aria-hidden="true"></div>
+<!-- ══════════════════════════ SECTION: MENU ══════════════════════════ -->
+<section id="menu" aria-label="Our story">
  
       <!-- Section 1 -->
       <article class="story-section left-image" data-section="0">
@@ -868,7 +1237,7 @@
           <h2 class="section-heading">Elegant Dessert<br><em>Catering</em></h2>
           <div class="section-rule"><div class="section-rule-line"></div><div class="section-rule-gem"></div></div>
           <p class="section-body">Handcrafted desserts for weddings, celebrations, and special events. Every creation is made with care and delivered with the kind of elegance that turns moments into memories.</p>
-          <a href="#" class="section-cta"><span>Explore Menu</span><span class="section-cta-arrow">→</span></a>
+          <a href="menu.html?category=events" class="section-cta"><span>Explore Menu</span><span class="section-cta-arrow">→</span></a>
         </div>
       </article>
  
@@ -886,7 +1255,7 @@
           <h2 class="section-heading">Beautiful<br><em>Presentations</em></h2>
           <div class="section-rule"><div class="section-rule-line"></div><div class="section-rule-gem"></div></div>
           <p class="section-body">We bring artistry to every table, every occasion. Our dessert presentations are designed for unforgettable experiences — from intimate dinners to grand ballrooms.</p>
-          <a href="#" class="section-cta"><span>Book an Event</span><span class="section-cta-arrow">→</span></a>
+          <a href="menu.html?category=events" class="section-cta"><span>Book an Event</span><span class="section-cta-arrow">→</span></a>
         </div>
       </article>
  
@@ -904,23 +1273,108 @@
           <h2 class="section-heading">Intimate<br><em>Occasions</em></h2>
           <div class="section-rule"><div class="section-rule-line"></div><div class="section-rule-gem"></div></div>
           <p class="section-body">Order premium desserts for intimate occasions or personal enjoyment. Luxury at your doorstep — whenever the moment calls for something truly special.</p>
-          <a href="#" class="section-cta"><span>Order Now</span><span class="section-cta-arrow">→</span></a>
+          <a href="menu.html?category=small" class="section-cta"><span>Order Now</span><span class="section-cta-arrow">→</span></a>
         </div>
       </article>
-    </section>
- 
-    <!-- Quote with Three.js particles -->
-    <section id="quote-interlude" aria-label="Our philosophy">
-      <canvas id="quote-canvas" aria-hidden="true"></canvas>
-      <p class="quote-text reveal-quote">"We don't just make desserts — we craft the sweetest chapters of your story."</p>
-      <p class="quote-attr reveal-quote" style="transition-delay:.2s;">— The ALHA Philosophy</p>
-    </section>
-  </main>
-  </div><!-- /#view-home -->
 
+      <!-- Quote with Three.js particles -->
+      <div id="quote-interlude" aria-label="Our philosophy">
+        <canvas id="quote-canvas" aria-hidden="true"></canvas>
+        <p class="quote-text reveal-quote">"We don't just make desserts — we craft the sweetest chapters of your story."</p>
+        <p class="quote-attr reveal-quote" style="transition-delay:.2s;">— The ALHA Philosophy</p>
+      </div>
+</section><!-- End #menu -->
+
+<!-- ══════════════════════════ SECTION: BLOG ══════════════════════════ -->
+<section id="blog" aria-label="Journal & Stories">
+  <div class="blog-header reveal-text">
+    <h2>Journal</h2>
+    <p>Stories, recipes, and behind-the-scenes moments</p>
+  </div>
   
- 
-  <footer role="contentinfo">
+  <div class="blog-grid">
+    <!-- Blog Card 1 -->
+    <article class="blog-card reveal-img">
+      <p class="blog-date">15 December 2024</p>
+      <h3>The Art of Layering: Creating Perfect Mille-Feuille</h3>
+      <p class="blog-excerpt">Discover the secrets behind our signature layered pastries, where technique meets passion in every delicate fold.</p>
+      <a href="#" class="blog-read-more">Read More <span>→</span></a>
+    </article>
+
+    <!-- Blog Card 2 -->
+    <article class="blog-card reveal-img" style="transition-delay: 0.1s;">
+      <p class="blog-date">28 November 2024</p>
+      <h3>Sourcing Excellence: Our Journey to Find Perfect Ingredients</h3>
+      <p class="blog-excerpt">From Kerala's spice gardens to imported Belgian chocolate, we travel far to bring you the finest ingredients.</p>
+      <a href="#" class="blog-read-more">Read More <span>→</span></a>
+    </article>
+
+    <!-- Blog Card 3 -->
+    <article class="blog-card reveal-img" style="transition-delay: 0.2s;">
+      <p class="blog-date">10 November 2024</p>
+      <h3>Wedding Season Chronicles: Creating 500 Desserts in One Night</h3>
+      <p class="blog-excerpt">A behind-the-scenes look at our largest catering event, where precision meets passion under pressure.</p>
+      <a href="#" class="blog-read-more">Read More <span>→</span></a>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════════════════════ SECTION: CONTACT ══════════════════════════ -->
+<section id="contact" aria-label="Contact Us">
+  <div class="contact-container">
+    <!-- Contact Form -->
+    <div class="contact-form-wrap reveal-img">
+      <h2>Get in Touch</h2>
+      <p>Let's create something extraordinary together</p>
+      
+      <form class="contact-form" aria-label="Contact form">
+        <div class="form-group">
+          <label for="contact-name">Your Name</label>
+          <input type="text" id="contact-name" name="name" required placeholder="Enter your name">
+        </div>
+        
+        <div class="form-group">
+          <label for="contact-email">Email Address</label>
+          <input type="email" id="contact-email" name="email" required placeholder="your@email.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="message" rows="5" required placeholder="Tell us about your event or inquiry..."></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="contact-info reveal-img" style="transition-delay: 0.15s;">
+      <h3>Reach Us</h3>
+      
+      <div class="info-item">
+        <p class="info-label">Location</p>
+        <p class="info-value">Kerala, India<br>Serving across all districts</p>
+      </div>
+
+      <div class="info-item">
+        <p class="info-label">Phone</p>
+        <p class="info-value"><a href="tel:+919876543210">+91 98765 43210</a><br>Mon-Sat, 9AM-8PM</p>
+      </div>
+
+      <div class="info-item">
+        <p class="info-label">Email</p>
+        <p class="info-value"><a href="mailto:hello@alha.in">hello@alha.in</a><br>We reply within 24 hours</p>
+      </div>
+
+      <div class="info-item">
+        <p class="info-label">Business Hours</p>
+        <p class="info-value">Monday - Saturday<br>9:00 AM - 8:00 PM<br><em>Sunday by appointment</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer role="contentinfo">
     <div class="footer-top">
       <div class="footer-brand-col">
         <span class="footer-brand-name">ALHA</span>
@@ -1359,145 +1813,9 @@ setTimeout(()=>{
 })();
  
 /* ════════════════════════════════════════════════════════
-   8. STRAIGHT PATH + SCROLL SPHERE
-   Strategy:
-   - SVG uses viewBox "0 0 W H" (no Y offset) so getPointAtLength
-     returns coords in the same space as the SVG element itself.
-   - The SVG is position:absolute inside #story-timeline, so its
-     coordinate origin is the timeline's top-left corner.
-   - The sphere is position:fixed. To place it at a given page-Y we
-     convert: fixedY = pageY - window.scrollY.
-   - We never touch left/top via setAttribute; we use style.left/top
-     directly for compositor-friendly updates.
-   - strokeDashoffset is set via style, not setAttribute, to avoid
-     forced style recalcs.
+   8. SCROLL REVEAL ANIMATIONS
 ════════════════════════════════════════════════════════ */
-(function () {
-  const timeline  = document.getElementById('story-timeline');
-  const svgEl     = document.getElementById('path-canvas');
-  const pathDraw  = document.getElementById('zigzag-path-draw');
-  const pathGhost = document.getElementById('zigzag-path-ghost');
-  const nodesG    = document.getElementById('path-nodes');
-  const sphere    = document.getElementById('sphere');
-  const sections  = Array.from(document.querySelectorAll('.story-section'));
-
-  // Half the sphere diameter (CSS: 26px)
-  const SPHERE_HALF = 13;
-
-  let measurePath = null;   // hidden SVG path used only for getPointAtLength
-  let pathLen     = 0;
-  let nodePageYs  = [];     // page-Y of each section midpoint (for glow check)
-  let tlPageTop   = 0;      // timeline top in page coords (cached on build)
-  let ticking     = false;
-
-  /* ── Build the vertical straight path ──────────────────── */
-  function buildPath() {
-    // Measure timeline position in page coords
-    const tlRect  = timeline.getBoundingClientRect();
-    tlPageTop     = tlRect.top + window.scrollY;
-    const tlH     = timeline.scrollHeight;
-    const tlW     = timeline.offsetWidth;
-    const cx      = tlW / 2;
-
-    // Collect page-Y for each section's vertical midpoint
-    nodePageYs = sections.map(sec => {
-      const r = sec.getBoundingClientRect();
-      return r.top + window.scrollY + r.height * 0.5;
-    });
-
-    // Path start / end (in SVG local coords = page coords relative to tlPageTop)
-    const yStart = 0;
-    const yEnd   = tlH;
-    const d      = `M ${cx} ${yStart} L ${cx} ${yEnd}`;
-
-    // Size the SVG to exactly cover the timeline; viewBox has NO y-offset
-    // so SVG local Y  ≡  offset from timeline top
-    svgEl.style.height = tlH + 'px';
-    svgEl.setAttribute('viewBox', `0 0 ${tlW} ${tlH}`);
-
-    pathGhost.setAttribute('d', d);
-    pathDraw.setAttribute('d', d);
-
-    // Node decorations at section midpoints
-    nodesG.innerHTML = '';
-    nodePageYs.forEach(pageY => {
-      const localY = pageY - tlPageTop;   // convert to SVG local coords
-
-      // Outer pulse ring
-      const ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      ring.setAttribute('cx', cx);
-      ring.setAttribute('cy', localY);
-      ring.setAttribute('r', '14');
-      ring.setAttribute('fill', 'none');
-      ring.setAttribute('stroke', 'rgba(201,151,58,.15)');
-      ring.setAttribute('stroke-width', '1');
-      nodesG.appendChild(ring);
-
-      // Inner solid dot
-      const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      dot.setAttribute('cx', cx);
-      dot.setAttribute('cy', localY);
-      dot.setAttribute('r', '4');
-      dot.setAttribute('fill', 'rgba(201,151,58,.6)');
-      dot.setAttribute('stroke', 'rgba(201,151,58,.25)');
-      dot.setAttribute('stroke-width', '6');
-      nodesG.appendChild(dot);
-    });
-
-    // Measure path length using a detached path (avoids display:none layout skip)
-    if (measurePath) measurePath.remove();
-    measurePath = document.createElementNS('http://www.w3.org/2000/svg','path');
-    measurePath.setAttribute('d', d);
-    measurePath.style.visibility = 'hidden';
-    measurePath.style.pointerEvents = 'none';
-    svgEl.appendChild(measurePath);
-    pathLen = measurePath.getTotalLength();
-
-    // Prime dasharray so the draw animation works
-    pathDraw.style.strokeDasharray  = pathLen;
-    pathDraw.style.strokeDashoffset = pathLen;
-  }
-
-  /* ── Map scroll position → 0..1 progress ───────────────── */
-  function getProgress() {
-    // We want progress=0 when the timeline's top edge hits the viewport top,
-    // and progress=1 when the timeline's bottom edge hits the viewport bottom.
-    const scrollTop    = window.scrollY;
-    const tlBottom     = tlPageTop + timeline.scrollHeight;
-    const scrollStart  = tlPageTop;                          // scroll where we begin
-    const scrollEnd    = tlBottom - window.innerHeight;      // scroll where we finish
-    const range        = scrollEnd - scrollStart;
-    if (range <= 0) return 0;
-    return Math.min(Math.max((scrollTop - scrollStart) / range, 0), 1);
-  }
-
-  /* ── Move sphere to match scroll ───────────────────────── */
-  function updateSphere() {
-    ticking = false;
-    if (!measurePath || pathLen === 0) return;
-
-    const t  = getProgress();
-    const pt = measurePath.getPointAtLength(t * pathLen);
-
-    // pt.x / pt.y are in SVG local coords (relative to timeline top).
-    // Convert to page coords, then to viewport (fixed) coords.
-    const pageX   = pt.x;                           // x has no scroll offset
-    const pageY   = tlPageTop + pt.y;               // local → page Y
-    const fixedX  = pageX;                          // page X = viewport X (no horizontal scroll)
-    const fixedY  = pageY - window.scrollY;         // page Y → viewport Y
-
-    sphere.style.left = (fixedX - SPHERE_HALF) + 'px';
-    sphere.style.top  = (fixedY - SPHERE_HALF) + 'px';
-
-    // Draw the path as the sphere travels
-    pathDraw.style.strokeDashoffset = pathLen * (1 - t);
-
-    // Glow boost when sphere is within 80px of a section midpoint
-    const nearNode = nodePageYs.some(ny => Math.abs(pageY - ny) < 80);
-    sphere.classList.toggle('at-node', nearNode);
-  }
-
-  /* ── Reveal observer (unchanged logic, kept here) ──────── */
+(function() {
   const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1508,40 +1826,6 @@ setTimeout(()=>{
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal-img,.reveal-text,.reveal-quote')
     .forEach(el => revealObserver.observe(el));
-
-  /* ── Init: rebuild geometry then place sphere ───────────── */
-  function init() {
-    // Two rAF passes: first lets layout settle, second measures clean geometry
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      buildPath();
-      updateSphere();
-    }));
-  }
-
-  /* ── Scroll: throttled via rAF ──────────────────────────── */
-  window.addEventListener('scroll', () => {
-    if (!ticking) { ticking = true; requestAnimationFrame(updateSphere); }
-  }, { passive: true });
-
-  /* ── Resize: debounced full rebuild ─────────────────────── */
-  window.addEventListener('resize', () => {
-    clearTimeout(window._rzT);
-    window._rzT = setTimeout(init, 150);
-  }, { passive: true });
-
-  /* ── Wait for portal reveal before first init ───────────── */
-  const obs = new MutationObserver(muts => {
-    muts.forEach(m => {
-      if (m.target.classList.contains('visible')) {
-        obs.disconnect();
-        setTimeout(init, 200);
-      }
-    });
-  });
-  obs.observe(document.getElementById('main-site'), { attributes: true, attributeFilter: ['class'] });
-
-  // Also catch cases where the site is already visible on DOMContentLoaded
-  window.addEventListener('load', () => setTimeout(init, 350), { once: true });
 })();
 
 /* ════════════════════════════════════════════════════════
@@ -1594,6 +1878,248 @@ setTimeout(()=>{
 
   updateCartBadge(); // Init
 })();
+/* ════════════════════════════════════════════════════════
+   ARC DOCK NAVIGATION (RIGHT SIDE)
+════════════════════════════════════════════════════════ */
+(function() {
+  // Create and inject arc dock HTML
+  const arcDockHTML = `
+    <nav id="arc-dock" role="navigation" aria-label="Page sections">
+      <svg id="arc-svg" xmlns="http://www.w3.org/2000/svg"
+           width="170" height="360" viewBox="0 0 170 360"
+           style="position:absolute;top:0;left:0;pointer-events:none;">
+        <!-- Ghost track -->
+        <path d="M 170 20 A 160 160 0 0 0 170 340"
+              fill="rgba(26,15,15,0.82)" stroke="none"/>
+        <path d="M 170 20 A 160 160 0 0 0 170 340"
+              fill="none" stroke="rgba(201,151,58,0.18)" stroke-width="1.5"/>
+        <!-- Animated gold arc -->
+        <path id="arc-line" d="M 170 20 A 160 160 0 0 0 170 340"
+              fill="none" stroke="rgba(201,151,58,0.7)" stroke-width="1.5"/>
+        <!-- Progress arc -->
+        <path id="arc-prog" d="M 170 20 A 160 160 0 0 0 170 340"
+              fill="none" stroke="#c9973a" stroke-width="2.5" opacity="0.5"/>
+      </svg>
+
+      <!-- Nav items: positioned by JS along the arc -->
+      <a class="arc-item" data-id="home" href="#home">
+        <i class="ti ti-home"></i>
+        <span>Home</span>
+      </a>
+      <a class="arc-item" data-id="menu" href="menu.html">
+        <i class="ti ti-chef-hat"></i>
+        <span>Menu</span>
+      </a>
+      <a class="arc-item" data-id="blog" href="#blog">
+        <i class="ti ti-notebook"></i>
+        <span>Blog</span>
+      </a>
+      <a class="arc-item" data-id="contact" href="#contact">
+        <i class="ti ti-mail"></i>
+        <span>Contact</span>
+      </a>
+
+      <!-- Action buttons -->
+      <a id="arc-cart" href="#" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c9973a" stroke-width="2" width="20" height="20">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span id="arc-cart-badge" style="display:none;">0</span>
+      </a>
+      <a id="arc-wa" href="https://wa.me/919876543210" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="#6b1126" width="20" height="20">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </a>
+    </nav>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', arcDockHTML);
+
+  const dock = document.getElementById('arc-dock');
+  if (!dock) return;
+
+  // Arc geometry: right edge flush, semicircle curves LEFT into the page
+  // SVG viewBox is "0 0 170 360", arc center is at x=170 (right edge), y=180 (middle)
+  // Radius 160 — points on arc range from x≈10 to x≈170
+  const CX = 170, CY = 180, R = 160;
+
+  // t=0 → top, t=1 → bottom; angles 120°→240° keep arc on LEFT half of circle
+  function arcPt(t) {
+    const angle = (2 * Math.PI / 3) + t * (2 * Math.PI / 3); // 120deg to 240deg
+    return {
+      x: CX + R * Math.cos(angle),
+      y: CY + R * Math.sin(angle)
+    };
+  }
+
+  // Position the 4 nav items evenly: t = 0.15, 0.38, 0.62, 0.85
+  const tNav = [0.15, 0.38, 0.62, 0.85];
+  const items = dock.querySelectorAll('.arc-item');
+  items.forEach((el, i) => {
+    const pt = arcPt(tNav[i]);
+    el.style.left = (pt.x - 10) + 'px';
+    el.style.top  = (pt.y - 10) + 'px';
+  });
+
+  // Cart button at t=0.28 (between Home and Menu), WhatsApp at t=0.72 (between Blog and Contact)
+  // Buttons are 44x44 — offset by 22px to center them on the arc point, plus 28px to pull inward
+  const cartEl = document.getElementById('arc-cart');
+  const waEl   = document.getElementById('arc-wa');
+  if (cartEl) {
+    const pt = arcPt(0.28);
+    cartEl.style.left = (pt.x - 22 - 28) + 'px';
+    cartEl.style.top  = (pt.y - 22) + 'px';
+  }
+  if (waEl) {
+    const pt = arcPt(0.72);
+    waEl.style.left = (pt.x - 22 - 28) + 'px';
+    waEl.style.top  = (pt.y - 22) + 'px';
+  }
+
+  // Animate arc stroke draw-on
+  const arcLine = document.getElementById('arc-line');
+  const arcProg = document.getElementById('arc-prog');
+  if (arcLine) {
+    const len = arcLine.getTotalLength();
+    arcLine.style.strokeDasharray  = len;
+    arcLine.style.strokeDashoffset = len;
+    arcProg.style.strokeDasharray  = len;
+    arcProg.style.strokeDashoffset = len;
+    setTimeout(() => {
+      arcLine.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)';
+      arcLine.style.strokeDashoffset = '0';
+    }, 800);
+  }
+
+  // Scroll progress fills arc-prog from top
+  function updateProgress() {
+    if (!arcProg || !arcLine) return;
+    const pct = Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1);
+    arcProg.style.strokeDashoffset = arcLine.getTotalLength() * (1 - pct);
+  }
+
+  // Active section detection
+  const sectionIds = ['home', 'menu', 'blog', 'contact'];
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        items.forEach(n => n.classList.toggle('active', n.dataset.id === e.target.id));
+      }
+    });
+  }, { threshold: 0.35 });
+  sectionIds.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+
+  // Click: smooth scroll for same-page sections, navigate for menu.html
+  items.forEach(item => {
+    item.addEventListener('click', e => {
+      if (item.getAttribute('href') && item.getAttribute('href').includes('.html')) return; // let it navigate
+      e.preventDefault();
+      const target = document.getElementById(item.dataset.id);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Cart badge sync
+  function syncBadge() {
+    const main = document.getElementById('cart-badge');
+    const arc  = document.getElementById('arc-cart-badge');
+    if (!main || !arc) return;
+    arc.textContent = main.textContent;
+    arc.style.display = +main.textContent > 0 ? 'flex' : 'none';
+  }
+
+  // Cart click → go to menu.html
+  if (cartEl) cartEl.addEventListener('click', e => { e.preventDefault(); window.location.href = 'menu.html'; });
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  setInterval(syncBadge, 400);
+  updateProgress();
+})();
+
+/* ════════════════════════════════════════════════════════
+   MOBILE BOTTOM NAV
+════════════════════════════════════════════════════════ */
+(function() {
+  // Create and inject mobile bottom nav HTML
+  const mobNavHTML = `
+    <div id="mobile-bottom-nav">
+      <button class="mob-nav-item" data-section="home">
+        <i class="ti ti-home mob-nav-icon"></i>
+        <span class="mob-nav-label">Home</span>
+      </button>
+      <button class="mob-nav-item" data-section="menu">
+        <i class="ti ti-chef-hat mob-nav-icon"></i>
+        <span class="mob-nav-label">Menu</span>
+      </button>
+      <button class="mob-nav-item" data-section="blog">
+        <i class="ti ti-notebook mob-nav-icon"></i>
+        <span class="mob-nav-label">Blog</span>
+      </button>
+      <button class="mob-nav-item" data-section="contact">
+        <i class="ti ti-mail mob-nav-icon"></i>
+        <span class="mob-nav-label">Contact</span>
+      </button>
+      <button id="mob-cart" class="mob-nav-item">
+        <i class="ti ti-shopping-cart mob-nav-icon"></i>
+        <span class="mob-nav-label">Cart</span>
+        <span id="mob-cart-badge" class="dock-badge" style="display:none;">0</span>
+      </button>
+      <a href="https://wa.me/919876543210" target="_blank" class="mob-nav-item">
+        <i class="ti ti-brand-whatsapp mob-nav-icon"></i>
+        <span class="mob-nav-label">WhatsApp</span>
+      </a>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', mobNavHTML);
+
+  const mobNav = document.getElementById('mobile-bottom-nav');
+  if (!mobNav) return;
+
+  const sectionIds = ['home', 'menu', 'blog', 'contact'];
+  
+  // Active section detection
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        mobNav.querySelectorAll('.mob-nav-item').forEach(n => {
+          n.classList.toggle('active', n.dataset.section === e.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.35 });
+  sectionIds.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+
+  // Click handlers
+  mobNav.querySelectorAll('.mob-nav-item[data-section]').forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.section);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Cart badge sync
+  function syncBadge() {
+    const main = document.getElementById('cart-badge');
+    const mob  = document.getElementById('mob-cart-badge');
+    if (!main || !mob) return;
+    mob.textContent = main.textContent;
+    mob.style.display = +main.textContent > 0 ? 'flex' : 'none';
+  }
+
+  // Cart click → go to menu.html
+  const mobCart = document.getElementById('mob-cart');
+  if (mobCart) mobCart.addEventListener('click', e => { 
+    e.preventDefault(); 
+    window.location.href = 'menu.html'; 
+  });
+
+  setInterval(syncBadge, 400);
+})();
+
 </script>
+
 </body>
 </html>
